@@ -1,0 +1,16 @@
+package dao;
+
+import java.util.List;
+
+import model.Client;
+
+public class ClientDAOTest {
+	public static void main(String[] args) {
+		ClientDAO clientDAO = new ClientDAO();
+		List<Client> allClients = clientDAO.getAllClients();
+		
+		for (Client c : allClients) {
+			System.out.println(c.getName());
+		}
+	}
+}
