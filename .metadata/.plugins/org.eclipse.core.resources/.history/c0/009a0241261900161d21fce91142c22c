@@ -1,0 +1,50 @@
+package application;
+
+import java.util.List;
+
+import dao.PayServDAO;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import model.Client;
+
+public class MainController {
+	@FXML
+	private Label lblStatus;
+
+	@FXML
+	private TextField txtUsername;
+
+	@FXML
+	private PasswordField txtPassword;
+
+	public void Login(ActionEvent event) {
+		PayServDAO payServDAO = new PayServDAO();
+		List<Client> clients = payServDAO.getAllClients();
+		boolean foundClient = false;
+		for (Client c : clients) {
+			if (c.isMatchingUser(txtUsername.getText(), txtPassword.getText()) == true) {
+				foundClient = true;
+				break;
+			}
+		}
+		
+		if (foundClient == true) {
+			try {
+				Parent root = FXMLLoader.load(getClass().getResource("/application/Main.fxml"));
+				Scene scene = new Scene(root, 300, 300);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		} else {
+			lblStatus.setText("Nu exista");
+		}
+	}
+}

@@ -142,6 +142,18 @@ public class Client implements Serializable {
 		this.providers = providers;
 	}
 
+	public boolean isMatchingUser(String username, String password) {
+		if (this.username.compareTo(username) != 0) {
+			return false;
+		}
+		
+		if (this.password.compareTo(password) != 0) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return "Client [name=" + name + ", surname=" + surname + ", username=" + username + "]";

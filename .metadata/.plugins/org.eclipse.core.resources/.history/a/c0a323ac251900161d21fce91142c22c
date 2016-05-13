@@ -1,0 +1,34 @@
+package application;
+
+import java.util.List;
+
+import dao.PayServDAO;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import model.Client;
+
+public class MainController {
+	@FXML
+	private Label lblStatus;
+
+	@FXML
+	private TextField txtUsername;
+
+	@FXML
+	private PasswordField txtPassword;
+
+	public void Login(ActionEvent event) {
+		PayServDAO payServDAO = new PayServDAO();
+		List<Client> clients = payServDAO.getAllClients();
+		boolean foundClient = false;
+		for (Client c : clients) {
+			if (c.isMatchingUser(txtUsername.getText(), txtPassword.getText()) == true) {
+				foundClient = true;
+				breakl
+			}
+		}
+	}
+}
