@@ -19,6 +19,13 @@ public class PayServDAO {
 		return this.getEntityManager().createQuery("select p from model.Provider p", Provider.class).getResultList();
 	}
 	
+	public void addClient(Client client) {
+		EntityManager em = this.getEntityManager();
+		em.getTransaction().begin();
+		em.persist(client);
+		em.getTransaction().commit();
+	}
+	
 	private EntityManager getEntityManager() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Payment Services");
 		EntityManager em = emf.createEntityManager();

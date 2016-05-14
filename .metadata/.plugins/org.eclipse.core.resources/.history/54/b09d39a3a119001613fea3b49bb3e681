@@ -1,0 +1,17 @@
+package exceptions;
+
+public class PayServException extends Exception{
+	private static final long serialVersionUID = 1L;
+
+	public GSONException(String message) {
+		super(message);
+	}
+
+	public GSONException(Throwable cause) {
+		super(cause);
+	}
+
+	public GSONException(String message, Throwable cause) {
+		super(message, cause);
+	}
+}

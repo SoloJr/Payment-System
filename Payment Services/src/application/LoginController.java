@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.util.List;
 
 import dao.PayServDAO;
@@ -52,6 +53,18 @@ public class LoginController {
 			alert.setTitle("Login Error");
 			alert.setContentText("Username or password are incorrect!");
 			alert.show();
+		}
+	}
+	
+	public void Register(ActionEvent event) {
+		try {
+			Stage registerStage = new Stage();
+			Parent root = FXMLLoader.load(getClass().getResource("/application/Register.fxml"));
+			Scene scene = new Scene(root, 350, 500);
+			registerStage.setScene(scene);
+			registerStage.show();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }

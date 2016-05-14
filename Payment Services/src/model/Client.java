@@ -154,6 +154,22 @@ public class Client implements Serializable {
 		return true;
 	}
 	
+	public boolean isMatchingUsername(String username) {
+		if (this.username.compareTo(username) != 0) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean isMathingEmail(String email) {
+		if (this.email.compareTo(email) != 0) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return "Client [name=" + name + ", surname=" + surname + ", username=" + username + "]";
