@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import dao.PayServDAO;
@@ -16,6 +17,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Client;
+import svrcon.EstablishConnectionSv;
+import svrcon.SvConnection;
 
 public class LoginController {
 	@FXML
@@ -28,16 +31,26 @@ public class LoginController {
 	private PasswordField txtPassword;
 
 	public void Login(ActionEvent event) {
-		PayServDAO payServDAO = new PayServDAO();
-		List<Client> clients = payServDAO.getAllClients();
+//		PayServDAO payServDAO = new PayServDAO();
+//		List<Client> clients = payServDAO.getAllClients();
 		boolean foundClient = false;
-		for (Client c : clients) {
-			if (c.isMatchingUser(txtUsername.getText(), txtPassword.getText()) == true) {
+//		for (Client c : clients) {
+//			if (c.isMatchingUser(txtUsername.getText(), txtPassword.getText()) == true) {
+//				foundClient = true;
+//				break;
+//			}
+//		}
+		SvConnection stub = (new EstablishConnectionSv()).getConnectionToSv();
+		try {
+			Client matchedClient = stub.getClientIfExist(txtUsername.getText());
+			if(matchedClient != null){
 				foundClient = true;
-				break;
 			}
+		} catch (RemoteException e1) {
+			foundClient = false;
+			//De logat eroarea
+			//Connection To sv not found
 		}
-
 		if (foundClient == true) {
 			try {
 				Stage mainStage = new Stage();

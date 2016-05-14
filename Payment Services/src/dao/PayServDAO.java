@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import model.Client;
 import model.Provider;
@@ -17,6 +18,17 @@ public class PayServDAO {
 	
 	public List<Provider> getProviders() {
 		return this.getEntityManager().createQuery("select p from model.Provider p", Provider.class).getResultList();
+	}
+	
+	public Client getClientByUsername(String username){
+		List<Client> matchClients  = this.getEntityManager().createQuery(
+				"SELECT c FROM model.Client c WHERE c.username = :custName")
+				.setParameter("custName", username)
+				.getResultList();
+		 if(matchClients.size() == 1){
+			return matchClients.get(0);
+		}
+		return null;
 	}
 	
 	public void addClient(Client client) {
