@@ -12,6 +12,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.datatools.connectivity.jdt.DRIVERLIBRARY/MySQL JDBC Driver Pay Serv"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
+	<classpathentry kind="lib" path="D:/ProiectJava/Payment-System/libraries/jfxrt.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
