@@ -31,27 +31,14 @@ public class LoginController {
 	private PasswordField txtPassword;
 
 	public void Login(ActionEvent event) {
-//		PayServDAO payServDAO = new PayServDAO();
-//		List<Client> clients = payServDAO.getAllClients();
-		boolean foundClient = false;
-//		for (Client c : clients) {
-//			if (c.isMatchingUser(txtUsername.getText(), txtPassword.getText()) == true) {
-//				foundClient = true;
-//				break;
-//			}
-//		}
+		Client matchedClient = null;
 		SvConnection stub = (new EstablishConnectionSv()).getConnectionToSv();
 		try {
-			Client matchedClient = stub.getClientIfExist(txtUsername.getText());
-			if(matchedClient != null){
-				foundClient = true;
-			}
-		} catch (RemoteException e1) {
-			foundClient = false;
-			//De logat eroarea
-			//Connection To sv not found
+			matchedClient = stub.getClientIfExist(txtUsername.getText());
+		} catch (RemoteException e1) {		
+			//De logat eroarea : Connection To sv lost
 		}
-		if (foundClient == true) {
+		if (matchedClient != null) {
 			try {
 				Stage mainStage = new Stage();
 				Parent root = FXMLLoader.load(getClass().getResource("/application/Main.fxml"));

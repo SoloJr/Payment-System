@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import svrcon.EstablishConnectionSv;
+import svrcon.SvConnection;
 
 public class Main extends Application {
 

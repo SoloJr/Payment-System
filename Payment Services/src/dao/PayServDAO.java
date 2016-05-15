@@ -9,35 +9,60 @@ import javax.persistence.Query;
 
 import model.Client;
 import model.Provider;
+import consts.Constants;
 
 public class PayServDAO {
-	
+
 	public List<Client> getAllClients() {
 		return this.getEntityManager().createQuery("select c from model.Client c", Client.class).getResultList();
 	}
-	
-	public List<Provider> getProviders() {
+
+	public List<Provider> getAllProviders() {
 		return this.getEntityManager().createQuery("select p from model.Provider p", Provider.class).getResultList();
 	}
-	
-	public Client getClientByUsername(String username){
-		List<Client> matchClients  = this.getEntityManager().createQuery(
-				"SELECT c FROM model.Client c WHERE c.username = :custName")
-				.setParameter("custName", username)
+
+	public Client getClientByUsername(String username) {
+		String query = "SELECT c FROM model.Client c WHERE c.username = :custName";
+		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("custName", username)
 				.getResultList();
-		 if(matchClients.size() == 1){
+		if (matchClients.size() == 1) {
 			return matchClients.get(0);
 		}
 		return null;
 	}
-	
+
+	public List<Client> getClientsByCriteria(short criteria, String searchedWord) {
+		String type = null;
+		switch (criteria) {
+		case Constants.USERNAME:
+			type = "username";
+			break;
+		case Constants.Mail:
+			type = "email";
+			break;
+		case Constants.NAME:
+			type = "name";
+			break;
+		case Constants.FORENAME:
+			type = "surname";
+			break;
+		default:
+			type = "username";
+			break;
+		}
+		String query = "SELECT c FROM model.Client c WHERE c." + type + " = :param";
+		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("param", searchedWord)
+				.getResultList();
+		return matchClients;
+	}
+
 	public void addClient(Client client) {
 		EntityManager em = this.getEntityManager();
 		em.getTransaction().begin();
 		em.persist(client);
 		em.getTransaction().commit();
 	}
-	
+
 	private EntityManager getEntityManager() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Payment Services");
 		EntityManager em = emf.createEntityManager();

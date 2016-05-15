@@ -1,0 +1,98 @@
+package application;
+
+import java.rmi.RemoteException;
+import java.util.List;
+
+import dao.PayServDAO;
+import exceptions.RegisterException;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import model.Client;
+import model.Provider;
+import svrcon.EstablishConnectionSv;
+import svrcon.SvConnection;
+
+public class RegisterController {
+	@FXML
+	private Label lblLogo;
+
+	@FXML
+	private TextField txtUsername;
+
+	@FXML
+	private PasswordField txtPassOne;
+
+	@FXML
+	private PasswordField txtPassTwo;
+
+	@FXML
+	private TextField txtName;
+
+	@FXML
+	private TextField txtSurname;
+
+	@FXML
+	private TextField txtEmail;
+
+	public void Register(ActionEvent event) {
+		SvConnection stub = (new EstablishConnectionSv()).getConnectionToSv();//De trimis ca parametru
+		try {
+			if (txtUsername.getText().isEmpty() == true && txtPassOne.getText().isEmpty() == true
+					&& txtPassTwo.getText().isEmpty() == true && txtName.getText().isEmpty() == true
+					&& txtSurname.getText().isEmpty() == true && txtEmail.getText().isEmpty() == true) {
+				throw new RegisterException("You didn't complete all fields!");
+			}
+
+			if (txtPassOne.getText().compareTo(txtPassTwo.getText()) != 0) {
+				throw new RegisterException("Passwords don't match!");
+			}
+			
+			Client client = null;
+			try {
+				client = stub.getClientIfExist(txtUsername.getText());
+			} catch (RemoteException e1) {
+				throw new RegisterException(e1);
+			}
+			if (client != null) {
+				throw new RegisterException("This username already exists!");
+			}
+
+			List<Provider> providers = null;
+			try {
+				providers = stub.getProviders();
+			} catch (RemoteException e) {
+				throw new RegisterException(e);
+			}
+			Client clientToAdd = new Client();
+			clientToAdd.setUsername(txtUsername.getText());
+			clientToAdd.setPassword(txtPassOne.getText());
+			clientToAdd.setName(txtName.getText());
+			clientToAdd.setSurname(txtSurname.getText());
+			clientToAdd.setEmail(txtEmail.getText());
+			clientToAdd.setProviders(providers);
+
+			try {
+				stub.addNewClient(clientToAdd);
+			} catch (RemoteException e1) {
+				// De logat eroarea : Connection To sv lost //
+			}
+
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Register Success");
+			alert.setContentText("You successfully registered this account!");
+			alert.show();
+
+		} catch (RegisterException ex) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Register Error");
+			alert.setContentText(ex.getMessage());
+			alert.show();
+		}
+	}
+
+}
