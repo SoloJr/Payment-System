@@ -88,7 +88,7 @@ public class RegisterController {
 		} catch (RemoteException e1) {
 			throw new RegisterException(e1);
 		}
-		if (clients != null) {
+		if (clients != null && clients.size()>0) {
 			throw new RegisterException("This email already exists!");
 		}
 
