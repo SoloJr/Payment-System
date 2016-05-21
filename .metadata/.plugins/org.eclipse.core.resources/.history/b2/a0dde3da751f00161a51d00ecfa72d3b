@@ -1,0 +1,77 @@
+package application;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import model.Bill;
+import model.BillFX;
+import model.Client;
+
+public class MainController implements Initializable{
+
+	@FXML
+	private Label lblClientName;
+
+	@FXML
+	private Label lblClientBalance;
+	
+	@FXML
+	private TableView<BillFX> table;
+	
+	@FXML
+	private TableColumn<BillFX, Number> ammount;
+	
+	@FXML
+	private TableColumn<BillFX, String> details;
+	
+	private ObservableList<BillFX> data;
+
+	private Client currentClient;
+
+	public void setCurrentClient(Client currentClient) {
+		this.lblClientName.setText(currentClient.getName() + " " + currentClient.getSurname());
+		this.lblClientBalance.setText(Double.toString(currentClient.getAccounts().get(0).getBalance()));
+		this.currentClient = currentClient;
+	}
+	
+	public Client getCurrentClient() {
+		return this.currentClient;
+	}
+	
+	public void Close() {
+		Platform.exit();
+	}
+	
+	public void onAbout() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Payment Services");
+		alert.setHeaderText("Developers");
+		alert.setContentText("This application was developed by Florin Sia and Mircea Solovastru");
+		alert.show();
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		data = FXCollections.observableArrayList();
+		/*for (Bill bill : currentClient.getBills()) {
+			data.add(new BillFX(bill.getIdBill(), bill.getAmmount(), bill.getDetails()));
+		}
+		System.out.println("aici intri 1");
+		table.setItems(data);
+		ammount.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getAmmount()));
+		details.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDetails()));
+		table.getColumns().addAll(ammount, details);*/
+	}
+}

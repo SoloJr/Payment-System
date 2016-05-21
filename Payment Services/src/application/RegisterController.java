@@ -1,13 +1,15 @@
 package application;
 
+import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import consts.Constants;
-import dao.PayServDAO;
 import exceptions.RegisterException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -18,7 +20,7 @@ import model.Provider;
 import svrcon.EstablishConnectionSv;
 import svrcon.SvConnection;
 
-public class RegisterController {
+public class RegisterController implements Initializable{
 	@FXML
 	private Label lblLogo;
 
@@ -53,7 +55,7 @@ public class RegisterController {
 			}
 			verifyDataFromControls();
 			addClient();
-			
+
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Register Success");
 			alert.setContentText("You successfully registered this account!");
@@ -81,14 +83,14 @@ public class RegisterController {
 		if (client != null) {
 			throw new RegisterException("This username already exists!");
 		}
-		
-		List<Client> clients=null;
+
+		List<Client> clients = null;
 		try {
-			clients = stub.searchClients(Constants.Mail, txtEmail.getText());
+			clients = stub.searchClients(Constants.MAIL, txtEmail.getText());
 		} catch (RemoteException e1) {
 			throw new RegisterException(e1);
 		}
-		if (clients != null && clients.size()>0) {
+		if (clients != null && clients.size() > 0) {
 			throw new RegisterException("This email already exists!");
 		}
 
@@ -115,5 +117,11 @@ public class RegisterController {
 			throw new RegisterException(e1);
 		}
 
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
 	}
 }

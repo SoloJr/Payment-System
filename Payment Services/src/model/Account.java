@@ -77,4 +77,9 @@ public class Account implements Serializable {
 		return transaction;
 	}
 
+	@Override
+	public String toString() {
+		return "Account [" + idAccount + ", " + balance + "]";
+	}
+
 }

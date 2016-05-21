@@ -1,8 +1,17 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -20,6 +29,39 @@ public class Bill implements Serializable {
 	private double ammount;
 
 	private String details;
+	
+	@Temporal(TemporalType.DATE)
+	private Date issueDate;
+	
+	@Temporal(TemporalType.DATE)
+	private Date dueDate;
+	
+	@Temporal(TemporalType.DATE)
+	private Date payDate;
+
+	public Date getIssueDate() {
+		return issueDate;
+	}
+
+	public void setIssueDate(Date issueDate) {
+		this.issueDate = issueDate;
+	}
+
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public Date getPayDate() {
+		return payDate;
+	}
+
+	public void setPayDate(Date payDate) {
+		this.payDate = payDate;
+	}
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
@@ -99,5 +141,4 @@ public class Bill implements Serializable {
 
 		return transaction;
 	}
-
 }

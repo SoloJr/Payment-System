@@ -1,8 +1,0 @@
-package svrcon;
-
-import java.rmi.Remote;
-
-public interface SvConnection implements Remote {
-
-	
-}

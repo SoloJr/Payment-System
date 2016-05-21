@@ -28,11 +28,11 @@ public class Client implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Account
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<Account> accounts;
 
 	//bi-directional many-to-one association to Bill
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
 	private List<Bill> bills;
 
 	//bi-directional many-to-many association to Provider

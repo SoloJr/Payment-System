@@ -1,0 +1,43 @@
+package model;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+public class BillFX {
+	private SimpleIntegerProperty idBill;
+
+	private SimpleDoubleProperty ammount;
+
+	private SimpleStringProperty details;
+
+	public BillFX(int idBill, double ammount, String details) {
+		this.idBill = new SimpleIntegerProperty(idBill);
+		this.ammount = new SimpleDoubleProperty(ammount);
+		this.details = new SimpleStringProperty(details);
+	}
+
+	public SimpleIntegerProperty getIdBill() {
+		return idBill;
+	}
+
+	public void setIdBill(SimpleIntegerProperty idBill) {
+		this.idBill = idBill;
+	}
+
+	public SimpleDoubleProperty getAmmount() {
+		return ammount;
+	}
+
+	public void setAmmount(SimpleDoubleProperty ammount) {
+		this.ammount = ammount;
+	}
+
+	public SimpleStringProperty getDetails() {
+		return details;
+	}
+
+	public void setDetails(SimpleStringProperty details) {
+		this.details = details;
+	}
+}
