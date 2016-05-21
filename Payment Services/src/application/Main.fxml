@@ -45,11 +45,12 @@
       </Label>
       <TableView fx:id="table" layoutX="14.0" layoutY="99.0" prefHeight="387.0" prefWidth="475.0">
         <columns>
-          <TableColumn fx:id="ammount" minWidth="25.0" prefWidth="75.0" text="Ammount" />
-            <TableColumn fx:id="issueDate" minWidth="25.0" prefWidth="85.0" text="Issue Date" />
-            <TableColumn fx:id="dueDate" minWidth="25.0" prefWidth="85.0" text="Due Date" />
-            <TableColumn fx:id="payDate" minWidth="25.0" prefWidth="85.0" text="Pay Date" />
-          <TableColumn fx:id="details" prefWidth="150.0" text="Details" />
+            <TableColumn fx:id="id" prefWidth="50.0" text="Bill Nr." />
+          <TableColumn fx:id="ammount" minWidth="25.0" prefWidth="75.0" text="Amount" />
+            <TableColumn fx:id="issueDate" minWidth="25.0" text="Issue Date" />
+            <TableColumn fx:id="dueDate" minWidth="25.0" text="Due Date" />
+            <TableColumn fx:id="payDate" minWidth="25.0" text="Pay Date" />
+          <TableColumn fx:id="details" prefWidth="110.0" text="Details" />
         </columns>
       </TableView>
    </children>

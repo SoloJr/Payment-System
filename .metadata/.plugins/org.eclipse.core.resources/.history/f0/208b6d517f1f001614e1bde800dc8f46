@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,10 +29,10 @@ public class MainController implements Initializable {
 	private Label lblClientBalance;
 	
 	@FXML
-	private TableView<BillFX> table;
-	
-	@FXML
 	private TableColumn<BillFX, Number> id;
+
+	@FXML
+	private TableView<BillFX> table;
 
 	@FXML
 	private TableColumn<BillFX, Number> ammount;
@@ -88,7 +87,6 @@ public class MainController implements Initializable {
 		sdf = new SimpleDateFormat("dd.MM.yyyy");
 		data = FXCollections.observableArrayList();
 		table.setItems(data);
-		id.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdBill()));
 		ammount.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getAmmount()));
 		details.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDetails()));
 		issueDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIssueDate().toString()));
