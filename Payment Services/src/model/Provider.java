@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -100,4 +103,12 @@ public class Provider implements Serializable {
 		this.clients = clients;
 	}
 
+	public List<Bill> issueInvoices(){
+		List<Bill> bills = new ArrayList<Bill>();
+		for(int i = 0; i< clients.size(); i++){
+			bills.add(new Bill(500, new Date()));	
+		}	
+		return bills;
+	}
+	
 }

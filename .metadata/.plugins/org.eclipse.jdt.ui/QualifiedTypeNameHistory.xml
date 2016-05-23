@@ -9,7 +9,6 @@
 <fullyQualifiedTypeName name="javafx.scene.control.PasswordField"/>
 <fullyQualifiedTypeName name="javafx.event.ActionEvent"/>
 <fullyQualifiedTypeName name="javafx.application.Application"/>
-<fullyQualifiedTypeName name="dao.PayServDAO"/>
 <fullyQualifiedTypeName name="javafx.scene.control.Alert.AlertType"/>
 <fullyQualifiedTypeName name="java.rmi.Remote"/>
 <fullyQualifiedTypeName name="java.rmi.registry.Registry"/>
@@ -26,8 +25,6 @@
 <fullyQualifiedTypeName name="javafx.concurrent.Task"/>
 <fullyQualifiedTypeName name="java.util.concurrent.Future"/>
 <fullyQualifiedTypeName name="svrcon.SvConnection"/>
-<fullyQualifiedTypeName name="java.util.List"/>
-<fullyQualifiedTypeName name="model.Provider"/>
 <fullyQualifiedTypeName name="consts.Constants"/>
 <fullyQualifiedTypeName name="javafx.stage.Window"/>
 <fullyQualifiedTypeName name="javafx.scene.Node"/>
@@ -48,4 +45,11 @@
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="javax.persistence.TemporalType"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="java.util.Calendar"/>
+<fullyQualifiedTypeName name="model.Provider"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="dao.PayServDAO"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="model.Bill"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
 </qualifiedTypeNameHistroy>

@@ -10,6 +10,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 
 import dao.PayServDAO;
+import model.Bill;
 import model.Client;
 import model.Provider;
 
@@ -80,6 +81,15 @@ public class SvConnectionUtils implements SvConnection {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public void sendBillToSystem(List<Bill> bills) {
+		executor.execute(() -> {
+			payServDAO.addBills(bills);
+		});
+		
+		
 	}
 
 }

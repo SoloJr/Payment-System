@@ -33,7 +33,7 @@ public class LoginController {
 	@FXML
 	private Button btnClose;
 
-	public void Login(ActionEvent event) {
+	public void login(ActionEvent event) {
 		Client matchedClient = null;
 		SvConnection stub = (new EstablishConnectionSv()).getConnectionToSv();
 		try {
@@ -56,7 +56,7 @@ public class LoginController {
 				mainController.setCurrentClient(matchedClient);
 
 				mainStage.show();
-				this.Close();
+				this.close();
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -68,7 +68,7 @@ public class LoginController {
 		}
 	}
 
-	public void Register(ActionEvent event) {
+	public void register(ActionEvent event) {
 		try {
 			Stage registerStage = new Stage();
 			Parent root = FXMLLoader.load(getClass().getResource("/application/Register.fxml"));
@@ -76,13 +76,13 @@ public class LoginController {
 			registerStage.setScene(scene);
 			registerStage.show();
 
-			this.Close();
+			this.close();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void Close() {
+	public void close() {
 		Stage stage = (Stage) btnClose.getScene().getWindow();
 		stage.close();
 	}

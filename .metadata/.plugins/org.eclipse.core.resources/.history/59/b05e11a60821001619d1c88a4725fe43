@@ -1,0 +1,36 @@
+package svrcon;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import dao.PayServDAO;
+import model.Bill;
+import model.Provider;
+
+public class SendInvoices extends Thread {
+        Calendar cal = Calendar.getInstance();
+        PayServDAO dao = new PayServDAO();
+ 	   List<Provider> providers = dao.getAllProviders();
+        public void run() {
+            try {
+                while (true) {
+                   cal.add(Calendar.MONTH, 1);       
+                   System.out.println(cal.getTime());
+                   
+                   for(Provider prov : providers){
+                	   List<Bill> bills = prov.issueInvoices();
+             	   }
+                   
+                    this.sleep(10000);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+	public static void main(String[] args) {
+		SendInvoices svi = new SendInvoices();
+		svi.start();
+	}
+}

@@ -4,6 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import model.Bill;
 import model.Client;
 import model.Provider;
 
@@ -14,4 +15,5 @@ public interface SvConnection extends Remote {
 	public Client getClientIfExist(String Username) throws RemoteException; 
 	public void addNewClient(Client newClient) throws RemoteException; 
 	public List<Provider> getProviders() throws RemoteException; 
+	public void sendBillToSystem(List<Bill> bills) throws RemoteException;
 }

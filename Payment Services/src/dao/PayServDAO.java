@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import consts.Constants;
+import model.Bill;
 import model.Client;
 import model.Provider;
 
@@ -66,10 +67,20 @@ public class PayServDAO {
 		em.persist(client);
 		em.getTransaction().commit();
 	}
-	
+
 	private EntityManager getEntityManager() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("Payment Services");
 		EntityManager em = emf.createEntityManager();
 		return em;
 	}
+
+	public void addBills(List<Bill> bills) {
+		EntityManager em = this.getEntityManager();
+		em.getTransaction().begin();
+		for (Bill bill : bills) {
+			em.persist(bill);
+		}
+		em.getTransaction().commit();
+	}
+
 }
