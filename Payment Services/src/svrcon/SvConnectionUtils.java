@@ -88,8 +88,6 @@ public class SvConnectionUtils implements SvConnection {
 		executor.execute(() -> {
 			payServDAO.addBills(bills);
 		});
-		
-		
 	}
 
 }

@@ -81,6 +81,7 @@ public class Bill implements Serializable {
 	}
 	
 	public Bill(double ammount, Date dueDate) {
+		
 		this.issueDate = new Date();
 		this.ammount = ammount;
 		this.dueDate = dueDate;

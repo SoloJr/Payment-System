@@ -1,9 +1,0 @@
-package model;
-
-public class BillFX {
-	private int idBill;
-
-	private double ammount;
-
-	private String details;
-}

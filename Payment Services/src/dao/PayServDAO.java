@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -7,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import consts.Constants;
+import model.Account;
 import model.Bill;
 import model.Client;
 import model.Provider;
@@ -74,13 +76,31 @@ public class PayServDAO {
 		return em;
 	}
 
-	public void addBills(List<Bill> bills) {
+	public void payBill(int billId) {
 		EntityManager em = this.getEntityManager();
+		Bill bill = em.find(Bill.class, billId);
 		em.getTransaction().begin();
-		for (Bill bill : bills) {
-			em.persist(bill);
-		}
+		bill.setPayDate(Calendar.getInstance().getTime());
 		em.getTransaction().commit();
+	}
+
+	public void updateBalance(int accountId, double newBalance) {
+		EntityManager em = this.getEntityManager();
+		Account account = em.find(Account.class, accountId);
+		em.getTransaction().begin();
+		account.setBalance(newBalance);
+		em.getTransaction().commit();
+	}
+
+	public void addBills(List<Bill> bills) {
+		// for (Bill bill : bills) {
+		// EntityManager em = this.getEntityManager();
+		// em.getTransaction().begin();
+		//
+		// em.persist(bill);
+		// em.getTransaction().commit();
+		// }
+
 	}
 
 }

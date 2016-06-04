@@ -43,7 +43,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="14.0" layoutY="99.0" prefHeight="387.0" prefWidth="475.0">
+      <TableView fx:id="table" layoutX="14.0" layoutY="99.0" prefHeight="325.0" prefWidth="475.0">
         <columns>
             <TableColumn fx:id="id" prefWidth="50.0" text="Bill Nr." />
           <TableColumn fx:id="ammount" minWidth="25.0" prefWidth="75.0" text="Amount" />
@@ -53,5 +53,20 @@
           <TableColumn fx:id="details" prefWidth="110.0" text="Details" />
         </columns>
       </TableView>
+      <CheckBox fx:id="cbViewAllBills" layoutX="347.0" layoutY="52.0" mnemonicParsing="false" onAction="#checkBoxHandle" text="View All Bills">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </CheckBox>
+      <Button fx:id="btnPayBills" layoutX="50.0" layoutY="442.0" mnemonicParsing="false" onAction="#payBills" prefHeight="40.0" prefWidth="170.0" text="Pay selected bill(s)">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="280.0" layoutY="442.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" text="Close">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
