@@ -14,7 +14,6 @@
 <fullyQualifiedTypeName name="java.rmi.registry.Registry"/>
 <fullyQualifiedTypeName name="java.rmi.registry.LocateRegistry"/>
 <fullyQualifiedTypeName name="java.rmi.RemoteException"/>
-<fullyQualifiedTypeName name="model.Client"/>
 <fullyQualifiedTypeName name="svrcon.EstablishConnectionSv"/>
 <fullyQualifiedTypeName name="org.eclipse.persistence.internal.jpa.rs.metadata.model.Query"/>
 <fullyQualifiedTypeName name="javax.persistence.Query"/>
@@ -54,4 +53,5 @@
 <fullyQualifiedTypeName name="java.util.Calendar"/>
 <fullyQualifiedTypeName name="svrcon.Server"/>
 <fullyQualifiedTypeName name="model.Account"/>
+<fullyQualifiedTypeName name="model.Client"/>
 </qualifiedTypeNameHistroy>

@@ -23,7 +23,7 @@ public class SvConnectionUtils implements SvConnection {
 	@Override
 	public Client getClientIfExist(String username, String password) throws RemoteException {
 		Callable<Client> task = () -> {
-			return payServDAO.getClientByUsername(username, password);
+			return payServDAO.getClientByUsername(username).get(0);
 		};
 		Future<Client> future = executor.submit(task);
 		try {
@@ -37,7 +37,7 @@ public class SvConnectionUtils implements SvConnection {
 	@Override
 	public Provider getProviderIfExist(String name, String password) throws RemoteException {
 		Callable<Provider> task = () -> {
-			return payServDAO.getProviderByName(name, password);
+			return payServDAO.getProviderByName(name).get(0);
 		};
 		Future<Provider> future = executor.submit(task);
 		try {

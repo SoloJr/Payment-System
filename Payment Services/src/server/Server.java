@@ -21,6 +21,7 @@ public class Server {
 		}
 		try {
 			serverSocket = new ServerSocket(portNumber);
+			System.out.println("Server Ready");
 			while (true) {
 				executor.execute(new ServerThread(serverSocket.accept()));
 			}

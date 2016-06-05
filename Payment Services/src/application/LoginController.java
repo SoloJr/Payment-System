@@ -1,7 +1,10 @@
 package application;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
+import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,8 +21,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Client;
 import model.Provider;
-import svrcon.EstablishConnectionSv;
-import svrcon.SvConnection;
+import server.ClientCall;
+import server.RequestResponse;
+import server.RequestType;
 
 public class LoginController {
 
@@ -34,20 +38,27 @@ public class LoginController {
 
 	@FXML
 	private Button btnClose;
-	
+
 	@FXML
 	private CheckBox cbProvider;
 
 	public void login(ActionEvent event) {
-		SvConnection stub = (new EstablishConnectionSv()).getConnectionToSv();
 		if (cbProvider.isSelected() == false) {
 			Client matchedClient = null;
+			RequestResponse<List<Client>> lookup = new RequestResponse<List<Client>>(Main.host, Main.portNumber);
+			lookup.request = RequestType.GET_CLIENT_BY_USERNAME;
+			lookup.parameters.add(txtUsername.getText());
+			ClientCall<List<Client>> callable = new ClientCall<List<Client>>(lookup);
+			List<Client> client = null;
 			try {
-				matchedClient = stub.getClientIfExist(txtUsername.getText(), txtPassword.getText());
-			} catch (RemoteException e1) {
-				// De logat eroarea : Connection To sv lost
+				Future<List<Client>> future = Main.clientExecutor.submit(callable);
+				client = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
-			if (matchedClient != null) {
+
+			if (client != null && client.get(0).getPassword().equals(txtPassword.getText())) {
+				matchedClient = client.get(0);
 				try {
 					Stage mainStage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
@@ -74,12 +85,18 @@ public class LoginController {
 			}
 		} else {
 			Provider matchedProvider = null;
+			RequestResponse<List<Provider>> lookup = new RequestResponse<List<Provider>>(Main.host, Main.portNumber);
+			lookup.request = RequestType.GET_PROVIDERS;
+			ClientCall<List<Provider>> callable = new ClientCall<List<Provider>>(lookup);
+			List<Provider> provider = null;
+			Future<List<Provider>> future = Main.clientExecutor.submit(callable);
 			try {
-				matchedProvider = stub.getProviderIfExist(txtUsername.getText(), txtPassword.getText());
-			} catch (RemoteException e1) {
-				// De logat eroarea : Connection To sv lost
+				provider = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
-			if (matchedProvider != null) {
+			if (provider != null && provider.get(0).getPassword().equals(txtPassword.getText())) {
+				matchedProvider = provider.get(0);
 				try {
 					Stage mainStage = new Stage();
 					FXMLLoader loader = new FXMLLoader();
@@ -104,7 +121,7 @@ public class LoginController {
 				alert.show();
 			}
 		}
-		
+
 	}
 
 	public void register(ActionEvent event) {

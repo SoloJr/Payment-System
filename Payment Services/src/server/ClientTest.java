@@ -1,26 +1,18 @@
 package server;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.Socket;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 
 import consts.Constants;
-import dao.PayServDAO;
 import model.Client;
 
 public class ClientTest {
-	public static ExecutorService ex = Executors.newCachedThreadPool();
+	public static ExecutorService clientExecutor = Executors.newCachedThreadPool();
 
 	public static void main(String[] args) {
 		int portNumber;
@@ -37,19 +29,23 @@ public class ClientTest {
 			sock = new Socket(host, portNumber);
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}		
+		}
+		
 		RequestResponse<List<Client>> lookup = new RequestResponse<List<Client>>(host, portNumber);
-		lookup.request = RequestType.GET_CLIENTS;
-		ClientCall<List<Client>> callable = new ClientCall<List<Client>>(lookup, sock);
-		Future<List<Client>> future = ex.submit(callable);
+		lookup.request = RequestType.GET_CLIENT_BY_USERNAME;
+		lookup.parameters.add("fu");
+		lookup.parameters.add("floasu");
+		ClientCall<List<Client>> callable = new ClientCall<List<Client>>(lookup);
+		Future<List<Client>> future = clientExecutor.submit(callable);
+		
 		try {
-			List<Client> clients = future.get();
-			for(int i=0; i< clients.size(); i++){
-				System.out.println((clients.get(i)).getName() );
-			}
+			List<Client> client = future.get();
+			if(client != null)
+			System.out.println(client.get(0).getName());
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
+		System.out.println("jumped");
 		
 	}
 	

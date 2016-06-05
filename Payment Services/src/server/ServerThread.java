@@ -1,15 +1,11 @@
 package server;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.List;
-
-import model.Client;
 
 public class ServerThread implements Runnable {
 	private Socket clientSocket;

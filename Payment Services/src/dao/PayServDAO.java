@@ -24,26 +24,26 @@ public class PayServDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Client getClientByUsername(String username, String password) {
-		String query = "SELECT c FROM model.Client c WHERE c.username = :custName AND c.password =:custPass";
-		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("custName", username).setParameter("custPass", password)
+	public List<Client> getClientByUsername(String username) {
+		String query = "SELECT c FROM model.Client c WHERE c.username = :custName";
+		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("custName", username)
 				.getResultList();
 		if (matchClients.size() == 1) {
 			System.out.println(matchClients.get(0).getAccounts().get(0).toString());
-			return matchClients.get(0);
+			return matchClients;
 		}
 
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public Provider getProviderByName(String name, String password) {
-		String query = "SELECT p FROM model.Provider p WHERE p.name = :custName AND p.password = :custPass";
-		List<Provider> matchProviders = this.getEntityManager().createQuery(query).setParameter("custName", name).setParameter("custPass", password)
+	public List<Provider> getProviderByName(String name) {
+		String query = "SELECT p FROM model.Provider p WHERE p.name = :custName";
+		List<Provider> matchProviders = this.getEntityManager().createQuery(query).setParameter("custName", name)
 				.getResultList();
 		if (matchProviders.size() == 1) {
 			System.out.println(matchProviders.get(0).getName().toString());
-			return matchProviders.get(0);
+			return matchProviders;
 		}
 
 		return null;
