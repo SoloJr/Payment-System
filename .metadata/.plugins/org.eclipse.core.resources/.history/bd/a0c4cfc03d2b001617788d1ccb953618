@@ -28,11 +28,7 @@ public class ServerUtils {
 			object = (List) payServDAO.getProviderByName(username);
 			break;
 		case ADD_CLIENT:
-			payServDAO.addClient((Client) look.parameters.get(0));
-		case PAY_BILL:
-			payServDAO.payBill((Integer) look.parameters.get(0));
-		case UPDATE_BALANCE:
-			payServDAO.updateBalance((Integer) look.parameters.get(0), (Double) look.parameters.get(1));
+			payServDAO.addClient((Client)look.parameters.get(0));
 		}
 
 		return object;

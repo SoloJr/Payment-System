@@ -7,8 +7,7 @@ public enum RequestType {
 	GET_PROVIDER_BY_NAME,
 	ADD_CLIENT,
 	ADD_PROVIDER,
-	PAY_BILL,
-	UPDATE_BALANCE
+	PAY_BILL
 
 	
 	

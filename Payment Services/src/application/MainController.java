@@ -23,6 +23,9 @@ import javafx.scene.control.TableView;
 import model.Bill;
 import model.BillFX;
 import model.Client;
+import server.ClientCall;
+import server.RequestResponse;
+import server.RequestType;
 
 public class MainController implements Initializable {
 
@@ -131,8 +134,21 @@ public class MainController implements Initializable {
 			int accountId = this.currentClient.getAccounts().get(0).getIdAccount();
 			double newBalance = this.currentClient.getAccounts().get(0).getBalance() - bill.getAmmount();
 			if (newBalance >= 0) {
-				payServDAO.updateBalance(accountId, newBalance);
-				payServDAO.payBill(bill.getIdBill());
+				
+				RequestResponse look = new RequestResponse(Main.host, Main.portNumber);
+				look.request = RequestType.UPDATE_BALANCE;
+				look.parameters.add(accountId);
+				look.parameters.add(newBalance);
+				ClientCall callable = new ClientCall(look);
+				Main.clientExecutor.submit(callable);
+				
+				
+				RequestResponse<Bill> lookup = new RequestResponse<Bill>(Main.host, Main.portNumber);
+				lookup.request = RequestType.PAY_BILL;
+				lookup.parameters.add(bill.getIdBill());
+				ClientCall<Bill> callable2 = new ClientCall<Bill>(lookup);
+				Main.clientExecutor.submit(callable2);
+				
 				table.getColumns().get(0).setVisible(false);
 				table.getColumns().get(0).setVisible(true);
 			} else {
