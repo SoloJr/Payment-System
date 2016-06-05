@@ -76,7 +76,7 @@ public class RegisterController implements Initializable{
 
 		Client client = null;
 		try {
-			client = stub.getClientIfExist(txtUsername.getText());
+			client = stub.getClientIfExist(txtUsername.getText(), txtPassOne.getText());
 		} catch (RemoteException e1) {
 			throw new RegisterException(e1);
 		}

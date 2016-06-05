@@ -28,6 +28,16 @@ public class Provider implements Serializable {
 	private String iban;
 
 	private String name;
+	
+	private String password;
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	//bi-directional many-to-one association to Bill
 	@OneToMany(mappedBy="provider")

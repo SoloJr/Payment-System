@@ -12,7 +12,8 @@ public interface SvConnection extends Remote {
 
 	public List<Client> getClients() throws RemoteException;
 	public List<Client> searchClients(short criteria, String searchedWord) throws RemoteException;
-	public Client getClientIfExist(String Username) throws RemoteException; 
+	public Client getClientIfExist(String username, String password) throws RemoteException; 
+	public Provider getProviderIfExist(String name, String password) throws RemoteException;
 	public void addNewClient(Client newClient) throws RemoteException; 
 	public List<Provider> getProviders() throws RemoteException; 
 	public void sendBillToSystem(List<Bill> bills) throws RemoteException;

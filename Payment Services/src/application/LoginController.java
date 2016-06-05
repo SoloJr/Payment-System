@@ -11,11 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Client;
+import model.Provider;
 import svrcon.EstablishConnectionSv;
 import svrcon.SvConnection;
 
@@ -32,40 +34,77 @@ public class LoginController {
 
 	@FXML
 	private Button btnClose;
+	
+	@FXML
+	private CheckBox cbProvider;
 
 	public void login(ActionEvent event) {
-		Client matchedClient = null;
 		SvConnection stub = (new EstablishConnectionSv()).getConnectionToSv();
-		try {
-			matchedClient = stub.getClientIfExist(txtUsername.getText());
-		} catch (RemoteException e1) {
-			// De logat eroarea : Connection To sv lost
-		}
-		if (matchedClient != null) {
+		if (cbProvider.isSelected() == false) {
+			Client matchedClient = null;
 			try {
-				Stage mainStage = new Stage();
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getResource("/application/Main.fxml"));
-				loader.load();
-				Parent root = loader.getRoot();
-				Scene scene = new Scene(root, 500, 500);
-				mainStage.setScene(scene);
-				mainStage.setTitle("Payment Services");
+				matchedClient = stub.getClientIfExist(txtUsername.getText(), txtPassword.getText());
+			} catch (RemoteException e1) {
+				// De logat eroarea : Connection To sv lost
+			}
+			if (matchedClient != null) {
+				try {
+					Stage mainStage = new Stage();
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/application/Main.fxml"));
+					loader.load();
+					Parent root = loader.getRoot();
+					Scene scene = new Scene(root, 500, 500);
+					mainStage.setScene(scene);
+					mainStage.setTitle("Payment Services");
 
-				MainController mainController = loader.getController();
-				mainController.setCurrentClient(matchedClient);
+					MainController mainController = loader.getController();
+					mainController.setCurrentClient(matchedClient);
 
-				mainStage.show();
-				this.close();
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+					mainStage.show();
+					this.close();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Login Error");
+				alert.setContentText("Username or password are incorrect!");
+				alert.show();
 			}
 		} else {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Login Error");
-			alert.setContentText("Username or password are incorrect!");
-			alert.show();
+			Provider matchedProvider = null;
+			try {
+				matchedProvider = stub.getProviderIfExist(txtUsername.getText(), txtPassword.getText());
+			} catch (RemoteException e1) {
+				// De logat eroarea : Connection To sv lost
+			}
+			if (matchedProvider != null) {
+				try {
+					Stage mainStage = new Stage();
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/application/Provider.fxml"));
+					loader.load();
+					Parent root = loader.getRoot();
+					Scene scene = new Scene(root, 500, 500);
+					mainStage.setScene(scene);
+					mainStage.setTitle("Payment Services");
+
+					MainController mainController = loader.getController();
+
+					mainStage.show();
+					this.close();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Login Error");
+				alert.setContentText("Username or password are incorrect!");
+				alert.show();
+			}
 		}
+		
 	}
 
 	public void register(ActionEvent event) {

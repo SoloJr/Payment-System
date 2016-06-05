@@ -10,11 +10,11 @@ public class BillFX {
 	private SimpleDoubleProperty ammount;
 
 	private SimpleStringProperty details;
-	
+
 	private SimpleStringProperty issueDate;
-	
+
 	private SimpleStringProperty dueDate;
-	
+
 	private SimpleStringProperty payDate;
 
 	public BillFX(int idBill, double ammount, String details, String issueDate, String dueDate, String payDate) {
