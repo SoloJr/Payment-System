@@ -1,0 +1,178 @@
+package application;
+
+import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import model.Account;
+import model.Bill;
+import model.Client;
+import model.ClientFX;
+import model.Contract;
+import model.Provider;
+import server.ClientCall;
+import server.RequestResponse;
+import server.RequestType;
+
+public class ProviderController implements Initializable {
+
+	@FXML
+	private Button btnSendBill;
+
+	@FXML
+	private TextField txtAmount;
+
+	@FXML
+	private TableView<ClientFX> tblClients;
+
+	@FXML
+	private TableColumn<ClientFX, String> colUsername;
+
+	@FXML
+	private TableColumn<ClientFX, String> colFirstName;
+
+	@FXML
+	private TableColumn<ClientFX, String> colLastName;
+
+	@FXML
+	private TableColumn<ClientFX, String> colEmail;
+
+	private ObservableList<ClientFX> data;
+
+	private Provider currentProvider;
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		data = FXCollections.observableArrayList();
+		tblClients.setPlaceholder(new Label("Niciun client!"));
+		tblClients.setItems(data);
+		colUsername.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUsername().toString()));
+		colFirstName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname().toString()));
+		colLastName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName().toString()));
+		colEmail.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEmail().toString()));
+	}
+
+	public Provider getCurrentProvider() {
+		return currentProvider;
+	}
+
+	public void setCurrentProvider(Provider currentProvider) {
+		System.out.println("Nr. contracte: " + currentProvider.getContracts().size());
+		if (currentProvider.getContracts().isEmpty() == false) {
+			for (Contract contract : currentProvider.getContracts()) {
+				Client client = contract.getClient();
+				data.add(new ClientFX(client.getIdClient(), client.getEmail(), client.getName(), client.getPassword(),
+						client.getSurname(), client.getUsername()));
+
+			}
+		}
+
+		this.currentProvider = currentProvider;
+	}
+
+	public void sendBillToClient(ActionEvent event) {
+		ClientFX clientFX = (ClientFX) tblClients.getSelectionModel().getSelectedItem();
+		if (txtAmount.getText().compareTo("") != 0 && clientFX != null) {
+			Bill bill = new Bill();
+			bill.setAmmount(Double.parseDouble(txtAmount.getText()));
+			Date issueDate = Calendar.getInstance().getTime();
+			bill.setIssueDate(issueDate);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(issueDate);
+			cal.add(Calendar.DATE, 10);
+			bill.setDueDate(cal.getTime());
+			bill.setPayDate(null);
+			bill.setProvider(currentProvider);
+			System.out.println(clientFX.getUsername());
+			RequestResponse<List<Bill>> lookupForBills = new RequestResponse<List<Bill>>(Main.host, Main.portNumber);
+			lookupForBills.request = RequestType.GET_BILLS;
+			ClientCall<List<Bill>> callableBills = new ClientCall<List<Bill>>(lookupForBills);
+			List<Bill> bills = null;
+			try {
+				Future<List<Bill>> future = Main.clientExecutor.submit(callableBills);
+				bills = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+			bill.setDetails(
+					"Factura " + bills.get(bills.size() - 1).getIdBill() + " " + this.currentProvider.getName());
+			Client client = null;
+			RequestResponse<List<Client>> lookup = new RequestResponse<List<Client>>(Main.host, Main.portNumber);
+			lookup.request = RequestType.GET_CLIENT_BY_USERNAME;
+			lookup.parameters.add(clientFX.getUsername());
+			ClientCall<List<Client>> callable = new ClientCall<List<Client>>(lookup);
+			List<Client> clients = null;
+			try {
+				Future<List<Client>> future = Main.clientExecutor.submit(callable);
+				clients = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+			client = clients.get(0);
+
+			bill.setClient(client);
+
+			RequestResponse<Bill> lookup2 = new RequestResponse<Bill>(Main.host, Main.portNumber);
+			lookup2.request = RequestType.ADD_BILL;
+			lookup2.parameters.add(bill);
+			ClientCall<Bill> callable2 = new ClientCall<Bill>(lookup2);
+			Main.clientExecutor.submit(callable2);
+
+			/*
+			 * RequestResponse<Client> lookupClient = new
+			 * RequestResponse<Client>(Main.host, Main.portNumber);
+			 * lookupClient.request = RequestType.ADD_BILL_TO_CLIENT;
+			 * lookupClient.parameters.add(bill);
+			 * lookupClient.parameters.add(client.getIdClient());
+			 * ClientCall<Client> callableClient = new
+			 * ClientCall<Client>(lookupClient);
+			 * Main.clientExecutor.submit(callableClient);
+			 */
+
+			Main.createAlert(AlertType.CONFIRMATION, "Factura", "Factura trimisã cãtre client!");
+			System.out.println(client.getContracts().size());
+			for (Contract c : client.getContracts()) {
+				if (c.getProvider().getName().compareTo(currentProvider.getName()) == 0) {
+					if (c.getAutoPay() == true) {
+						int accountId = client.getAccounts().get(0).getIdAccount();
+						double newBalance = client.getAccounts().get(0).getBalance() - bill.getAmmount();
+						if (newBalance >= 0) {
+							RequestResponse<Account> lookupAccount = new RequestResponse<>(Main.host, Main.portNumber);
+							lookupAccount.request = RequestType.UPDATE_BALANCE;
+							lookupAccount.parameters.add(accountId);
+							lookupAccount.parameters.add(newBalance);
+							ClientCall<Account> callableAccount = new ClientCall<Account>(lookupAccount);
+							Main.clientExecutor.submit(callableAccount);
+
+							RequestResponse<Bill> lookupBill = new RequestResponse<Bill>(Main.host, Main.portNumber);
+							lookupBill.request = RequestType.PAY_BILL_BY_DETAIL;
+							lookupBill.parameters.add(bill.getDetails());
+							ClientCall<Bill> callableBill = new ClientCall<Bill>(lookupBill);
+							Main.clientExecutor.submit(callableBill);
+						}
+					}
+				}
+			}
+		} else {
+			Main.createAlert(AlertType.ERROR, "Factura", "Eroare neprevãzutã!");
+		}
+	}
+}

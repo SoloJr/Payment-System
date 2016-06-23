@@ -1,0 +1,113 @@
+package model;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
+
+
+/**
+ * The persistent class for the provider database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Provider.findAll", query="SELECT p FROM Provider p")
+public class Provider implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private int idProvider;
+
+	private String iban;
+
+	private String name;
+
+	private String password;
+
+	//bi-directional many-to-one association to Bill
+	@OneToMany(mappedBy="provider", fetch=FetchType.EAGER)
+	private List<Bill> bills;
+
+	//bi-directional many-to-one association to Contract
+	@OneToMany(mappedBy="provider", fetch=FetchType.EAGER)
+	private List<Contract> contracts;
+
+	public Provider() {
+	}
+
+	public int getIdProvider() {
+		return this.idProvider;
+	}
+
+	public void setIdProvider(int idProvider) {
+		this.idProvider = idProvider;
+	}
+
+	public String getIban() {
+		return this.iban;
+	}
+
+	public void setIban(String iban) {
+		this.iban = iban;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<Bill> getBills() {
+		return this.bills;
+	}
+
+	public void setBills(List<Bill> bills) {
+		this.bills = bills;
+	}
+
+	public Bill addBill(Bill bill) {
+		getBills().add(bill);
+		bill.setProvider(this);
+
+		return bill;
+	}
+
+	public Bill removeBill(Bill bill) {
+		getBills().remove(bill);
+		bill.setProvider(null);
+
+		return bill;
+	}
+
+	public List<Contract> getContracts() {
+		return this.contracts;
+	}
+
+	public void setContracts(List<Contract> contracts) {
+		this.contracts = contracts;
+	}
+
+	public Contract addContract(Contract contract) {
+		getContracts().add(contract);
+		contract.setProvider(this);
+
+		return contract;
+	}
+
+	public Contract removeContract(Contract contract) {
+		getContracts().remove(contract);
+		contract.setProvider(null);
+
+		return contract;
+	}
+
+}

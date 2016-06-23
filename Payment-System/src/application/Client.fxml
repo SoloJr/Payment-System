@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+	minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0"
+	tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+	<tabs>
+		<Tab text="Facturi">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+					prefWidth="200.0">
+					<children>
+						<Label layoutX="14.0" layoutY="14.0" text="Nume client: ">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<Label fx:id="lblClientName" layoutX="120.0" layoutY="14.0"
+							prefHeight="27.0" prefWidth="186.0">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<Label layoutX="14.0" layoutY="41.0" text="Sold: ">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<Label fx:id="lblClientBalance" layoutX="120.0" layoutY="41.0"
+							prefHeight="27.0" prefWidth="185.0">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<CheckBox fx:id="cbViewAllBills" layoutX="307.0" layoutY="29.0"
+							mnemonicParsing="false" onAction="#checkBoxHandle" text="Vezi toate facturile">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</CheckBox>
+						<TableView fx:id="table" layoutX="14.0" layoutY="78.0"
+							prefHeight="325.0" prefWidth="475.0">
+							<columns>
+								<TableColumn fx:id="id" prefWidth="75.0" text="Nr. Factură" />
+								<TableColumn fx:id="ammount" prefWidth="53.0" text="Sumă" />
+								<TableColumn fx:id="issueDate" prefWidth="87.0"
+									text="Dată Emitere" />
+								<TableColumn fx:id="dueDate" prefWidth="91.0"
+									text="Dată Scadentă" />
+								<TableColumn fx:id="payDate" prefWidth="69.0" text="Dată Plată" />
+								<TableColumn fx:id="details" prefWidth="75.0" text="Detalii" />
+							</columns>
+						</TableView>
+						<Button fx:id="btnPayBills" layoutX="50.0" layoutY="419.0"
+							mnemonicParsing="false" onAction="#payBills" prefHeight="40.0"
+							prefWidth="170.0" text="Plătește factura">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Button>
+						<Button layoutX="280.0" layoutY="419.0" mnemonicParsing="false"
+							onAction="#close" prefHeight="40.0" prefWidth="170.0" text="Închide">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Button>
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+		<Tab text="Furnizori">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
+					prefWidth="200.0">
+					<children>
+						<Label layoutX="14.0" layoutY="111.0" text="Furnizorii &#10;mei:"
+							textAlignment="CENTER">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<TableView fx:id="myProvidersTable" layoutX="111.0"
+							layoutY="14.0" prefHeight="211.0" prefWidth="372.0">
+							<columns>
+								<TableColumn fx:id="nameMyProvider" prefWidth="140.0"
+									text="Nume" />
+								<TableColumn fx:id="ibanMyProvider" prefWidth="225.0"
+									text="IBAN" />
+							</columns>
+						</TableView>
+						<Label layoutX="19.0" layoutY="240.0" text="Furnizori: ">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<TableView fx:id="providersTable" layoutX="111.0"
+							layoutY="236.0" prefHeight="229.0" prefWidth="372.0">
+							<columns>
+								<TableColumn fx:id="nameProvider" prefWidth="140.0"
+									text="Nume" />
+								<TableColumn fx:id="ibanProvider" prefWidth="225.0"
+									text="IBAN" />
+							</columns>
+						</TableView>
+						<Button fx:id="btnAddProvider" layoutX="10.0" layoutY="284.0"
+							mnemonicParsing="false" onAction="#addProvider" prefHeight="86.0"
+							prefWidth="87.0" text="Adauga&#10;Furnizor&#10;" textAlignment="CENTER">
+							<font>
+								<Font size="16.0" />
+							</font>
+						</Button>
+						<CheckBox fx:id="cbAutoPay" layoutX="17.0" layoutY="391.0"
+							mnemonicParsing="false" text="Plată&#10;Automată" textAlignment="CENTER" />
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+	</tabs>
+</TabPane>
