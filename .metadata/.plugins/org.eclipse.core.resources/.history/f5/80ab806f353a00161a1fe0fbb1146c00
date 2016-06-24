@@ -1,0 +1,111 @@
+package server;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import application.Main;
+import dao.PayServDAO;
+import model.Bill;
+import model.Client;
+import model.Contract;
+import model.Provider;
+
+public class AutomaticInvoice {
+		private static double amount = 10; 
+		private static int billNumber=600;
+		private static int port = 405;
+		private static String host = "localhost";
+		Calendar cal = Calendar.getInstance();
+		PayServDAO dao = null;
+		List<Provider> providers = null;
+		List<Client> clients = null;
+		ExecutorService pool = Executors.newFixedThreadPool(3);
+		AutomaticInvoice (){
+			dao = new PayServDAO();
+			providers = dao.getAllProviders();
+		 }
+		public void startThread(){
+			EmitInvoice em = new EmitInvoice();
+			em.start();
+		}
+		
+		public static Bill createBill(Provider currentProvider, Client client){
+			Bill bill = new Bill();
+			bill.setAmount(amount);
+			Date issueDate = Calendar.getInstance().getTime();
+			bill.setIssueDate(issueDate);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(issueDate);
+			cal.add(Calendar.DATE, 10);
+			bill.setDueDate(cal.getTime());
+			bill.setPayDate(null);
+			bill.setProvider(currentProvider);
+			bill.setDetails("Factura " + billNumber++ + " " + currentProvider.getName());
+			bill.setClient(client);	
+			return bill;
+		}
+	
+		public List<Client> getSubsribers(Provider provider){
+			List<Client> subscribers = new ArrayList<Client>();
+			
+			RequestResponse<List<Contract>> lookup = new RequestResponse<List<Contract>>(Main.host, Main.portNumber);
+			lookup.request = RequestType.GET_CONTRACT_BY_PROVIDER;
+			lookup.parameters.add(provider.getIdProvider());
+			ClientCall<List<Contract>> callable = new ClientCall<List<Contract>>(lookup);
+			List<Contract> contracts = null;
+			try {
+				Future<List<Contract>> future = Main.clientExecutor.submit(callable);
+				contracts = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+			if(contracts == null){
+				return null;
+			}
+			for(Contract contract : contracts){
+				subscribers.add(contract.getClient());
+			}
+			return subscribers;
+		}
+		
+		public void sendBills(Provider provider, List<Client> subscribers){	
+			for(Client client : subscribers){
+				Bill bill = createBill(provider, client);
+				RequestResponse<Bill> lookup2 = new RequestResponse<Bill>(host, port);
+				lookup2.request = RequestType.ADD_BILL;
+				lookup2.parameters.add(bill);
+				ClientCall<Bill> callable2 = new ClientCall<Bill>(lookup2);
+				pool.submit(callable2);
+			}
+		}
+		
+		
+		public class EmitInvoice extends Thread{
+		public void run() {
+			try {
+				while (true) {
+					System.out.println("some");
+//					for (Provider provider : providers) {
+//						sendBills(provider, getSubsribers(provider));
+//						
+//					}
+					this.sleep(1000);
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		}
+		}
+		public static void main(String[] args) {
+			AutomaticInvoice sendInvoices = new AutomaticInvoice();
+			sendInvoices.startThread();
+		}
+
+}

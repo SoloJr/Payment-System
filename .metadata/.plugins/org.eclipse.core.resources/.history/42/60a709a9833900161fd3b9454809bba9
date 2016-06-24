@@ -1,0 +1,80 @@
+package model;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
+
+
+/**
+ * The persistent class for the contract database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Contract.findAll", query="SELECT c FROM Contract c")
+public class Contract implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private int idContract;
+
+	private boolean autoPay;
+	
+	private int value; 
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
+
+	//bi-directional many-to-one association to Client
+	@ManyToOne
+	@JoinColumn(name="idClient")
+	private Client client;
+
+	//bi-directional many-to-one association to Provider
+	@ManyToOne
+	@JoinColumn(name="idProvider")
+	private Provider provider;
+
+	public Contract() {
+	}
+
+	public int getIdContract() {
+		return this.idContract;
+	}
+
+	public void setIdcontract(int idContract) {
+		this.idContract = idContract;
+	}
+
+	public boolean getAutoPay() {
+		return this.autoPay;
+	}
+
+	public void setAutoPay(boolean autoPay) {
+		this.autoPay = autoPay;
+	}
+
+	public Date getDate() {
+		return this.date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Client getClient() {
+		return this.client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public Provider getProvider() {
+		return this.provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
+	}
+
+}

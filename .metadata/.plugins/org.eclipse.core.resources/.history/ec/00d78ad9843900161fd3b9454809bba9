@@ -1,0 +1,87 @@
+package server;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import application.Main;
+import dao.PayServDAO;
+import model.Bill;
+import model.Client;
+import model.Contract;
+import model.Provider;
+
+public class AutomaticInvoice extends Thread {
+		private static double amount = 10; 
+		private static int billNumber=1000;
+		private static int port = 1000;
+		private static String host = "localhost";
+		Calendar cal = Calendar.getInstance();
+		PayServDAO dao = new PayServDAO();
+		List<Provider> providers = dao.getAllProviders();
+		List<Client> clients = null;
+		ExecutorService pool = Executors.newFixedThreadPool(3);
+		public static Bill createBill(Provider currentProvider, Client client){
+			Bill bill = new Bill();
+			bill.setAmount(amount);
+			Date issueDate = Calendar.getInstance().getTime();
+			bill.setIssueDate(issueDate);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(issueDate);
+			cal.add(Calendar.DATE, 10);
+			bill.setDueDate(cal.getTime());
+			bill.setPayDate(null);
+			bill.setProvider(currentProvider);
+			bill.setDetails("Factura " + billNumber++ + " " + currentProvider.getName());
+			bill.setClient(client);	
+			return bill;
+		}
+		public List<Integer> getSubsribers(Provider provider){
+			List<Integer> subscribers = new ArrayList<Integer>();
+			
+			RequestResponse<List<Contract>> lookup = new RequestResponse<List<Contract>>(Main.host, Main.portNumber);
+			lookup.request = RequestType.GET_CONTRACT_BY_PROVIDER;
+			lookup.parameters.add(provider.getIdProvider());
+			ClientCall<List<Contract>> callable = new ClientCall<List<Contract>>(lookup);
+			List<Contract> contracts = null;
+			try {
+				Future<List<Contract>> future = Main.clientExecutor.submit(callable);
+				contracts = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+			for(Contract contract : contracts){
+				subscribers.add(contract.getClient());
+			}
+			return subscribers;
+		}
+		
+		public void sendBills(Provider provider, List<Client> subsribers){
+			
+		}
+		
+		public void run() {
+			try {
+				while (true) {
+					for (Provider provider : providers) {
+						sendBills(provider, getSubsribers(provider));
+						this.sleep(3000);
+					}
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		public static void main(String[] args) {
+			AutomaticInvoice sendInvoices = new AutomaticInvoice();
+			sendInvoices.start();
+		}
+
+}

@@ -6,6 +6,7 @@ import dao.PayServDAO;
 import model.Bill;
 import model.Client;
 import model.Contract;
+import model.Provider;
 
 public class ServerUtils {
 	private static PayServDAO payServDAO = new PayServDAO();
@@ -32,6 +33,10 @@ public class ServerUtils {
 		case GET_BILLS:
 			object = (List) payServDAO.getAllBills();
 			break;
+		case GET_BILLS_BY_CLIENT:
+			Client client = (Client) look.parameters.get(0);
+			object = (List) payServDAO.getBillsByClient(client);
+			break;
 		case ADD_CLIENT:
 			payServDAO.addClient((Client) look.parameters.get(0));
 			break;
@@ -54,6 +59,10 @@ public class ServerUtils {
 			payServDAO.addBillToClient((Bill) look.parameters.get(0), (Integer) look.parameters.get(1));
 			break;
 		case ADD_PROVIDER:
+			break;
+		case GET_CONTRACT_BY_PROVIDER:
+			Provider provider = (Provider) look.parameters.get(0);
+			object = (List) payServDAO.getContractsByProvider(provider);
 			break;
 		default:
 			break;

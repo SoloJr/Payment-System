@@ -15,7 +15,7 @@ public class Contract implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int idcontract;
+	private int idContract;
 
 	private boolean autoPay;
 
@@ -35,12 +35,12 @@ public class Contract implements Serializable {
 	public Contract() {
 	}
 
-	public int getIdcontract() {
-		return this.idcontract;
+	public int getIdContract() {
+		return this.idContract;
 	}
 
-	public void setIdcontract(int idcontract) {
-		this.idcontract = idcontract;
+	public void setIdcontract(int idContract) {
+		this.idContract = idContract;
 	}
 
 	public boolean getAutoPay() {
@@ -74,5 +74,4 @@ public class Contract implements Serializable {
 	public void setProvider(Provider provider) {
 		this.provider = provider;
 	}
-
 }

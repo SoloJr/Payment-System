@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import consts.Constants;
 import javafx.application.Application;
@@ -57,5 +58,13 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		initSvConnection(args);
 		launch(args);
+		
+		clientExecutor.shutdown();
+        try {
+        	clientExecutor.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            System.out.println("Stopped waiting early");
+        }
+
 	}
 }

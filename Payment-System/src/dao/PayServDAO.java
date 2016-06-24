@@ -137,8 +137,9 @@ public class PayServDAO {
 	}
 
 	private EntityManager getEntityManager() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PaymentServices");
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PaymentServices");	
 		EntityManager em = emf.createEntityManager();
+		em.getEntityManagerFactory().getCache().evictAll();
 		return em;
 	}
 
@@ -168,5 +169,21 @@ public class PayServDAO {
 		em.getTransaction().begin();
 		account.setBalance(newBalance);
 		em.getTransaction().commit();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Contract> getContractsByProvider(Provider provider) {
+		String query = "SELECT k FROM model.Contract k WHERE k.provider = :paramProviderId";
+		List<Contract> contracts = this.getEntityManager().createQuery(query).setParameter("paramProviderId", provider)
+				.getResultList();
+		return contracts;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Bill> getBillsByClient(Client client) {
+		String query = "SELECT b FROM model.Bill b WHERE b.client = :paramClient";
+		List<Bill> bills = this.getEntityManager().createQuery(query).setParameter("paramClient", client)
+				.getResultList();
+		return bills;
 	}
 }

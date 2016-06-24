@@ -1,0 +1,79 @@
+package server;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import application.Main;
+import dao.PayServDAO;
+import model.Bill;
+import model.Client;
+import model.Provider;
+
+public class AutomaticInvoice extends Thread {
+		private static double amount = 10; 
+		private static int billNumber=1000;
+		private static int port = 1000;
+		private static String host = "localhost";
+		Calendar cal = Calendar.getInstance();
+		PayServDAO dao = new PayServDAO();
+		List<Provider> providers = dao.getAllProviders();
+		List<Client> clients = null;
+		ExecutorService pool = Executors.newFixedThreadPool(3);
+		public static Bill createBill(Provider currentProvider, Client client){
+			Bill bill = new Bill();
+			bill.setAmount(amount);
+			Date issueDate = Calendar.getInstance().getTime();
+			bill.setIssueDate(issueDate);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(issueDate);
+			cal.add(Calendar.DATE, 10);
+			bill.setDueDate(cal.getTime());
+			bill.setPayDate(null);
+			bill.setProvider(currentProvider);
+			bill.setDetails("Factura " + billNumber++ + " " + currentProvider.getName());
+			bill.setClient(client);	
+			return bill;
+		}
+		public List<Client> getSubsribers(Provider provider){
+			List<Client> subscribers;	
+			RequestResponse<List<Client>> lookup = new RequestResponse<List<Client>>(host, port);
+			lookup.request = RequestType.GET_CLIENTS;
+			ClientCall<List<Client>> callable = new ClientCall<List<Client>>(lookup);
+			try {
+				Future<List<Client>> future = pool.submit(callable);
+				clients = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+			client = clients.get(0);
+		
+		}
+		public void run() {
+			try {
+				while (true) {
+					for (Provider provider : providers) {
+						List<Bill> bills = provider.issueInvoices();
+						SvConnection stub = (new EstablishConnectionSv()).getConnectionToSv();
+						stub.sendBillToSystem(bills);
+						this.sleep(3000);
+					}
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		public static void main(String[] args) {
+			AutomaticInvoice sendInvoices = new AutomaticInvoice();
+			sendInvoices.start();
+		}
+	}
+
+}
