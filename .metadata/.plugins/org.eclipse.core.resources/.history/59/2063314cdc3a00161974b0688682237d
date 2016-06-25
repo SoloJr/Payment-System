@@ -1,0 +1,74 @@
+package server;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+/**
+ * The class that starts the connection
+ * between the server and the client
+ * in a new Thread.
+ * @author Florin Sia
+ */
+public class ServerThread implements Runnable {
+	/**
+	 * Field for the socket. 
+	 */
+	private Socket clientSocket;
+
+	/**
+	 * CTOR in which it sets the socket.
+	 * @param socket
+	 */
+	public ServerThread(Socket socket) {
+		clientSocket = socket;
+	}
+
+	/**
+	 * Reads the request stream sent by the client and 
+	 * sends back the answer.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void accept() {
+		OutputStream out = null;
+		ObjectOutputStream stream = null;
+		InputStream in = null;
+		ObjectInputStream objStream = null;
+		try {
+			in = clientSocket.getInputStream();
+			objStream = new ObjectInputStream(in);
+			RequestResponse lookup = (RequestResponse) objStream.readObject();
+			if (lookup != null) {
+				out = clientSocket.getOutputStream();
+				stream = new ObjectOutputStream(out);
+				lookup.response = ServerUtils.getValue(lookup);
+				stream.writeObject(lookup);
+			}
+		} catch (Exception ex) {
+			System.out.println("");
+		} finally {
+			try {
+				if (out != null)
+					out.close();
+				if (stream != null)
+					stream.close();
+				if (in != null)
+					in.close();
+			} catch (IOException e) {
+				System.out.println("");
+			}
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		accept();
+	}
+
+}

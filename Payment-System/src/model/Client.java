@@ -5,100 +5,205 @@ import javax.persistence.*;
 
 import java.util.List;
 
-
 /**
  * The persistent class for the client database table.
  * 
  */
 @Entity
-@NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
+@NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c")
 public class Client implements Serializable {
+	/**
+	 * Field for serial.
+	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Field for id.
+	 */
 	@Id
 	private int idClient;
 
+	/**
+	 * Field for email.
+	 */
 	private String email;
 
+	/**
+	 * Field for name.
+	 */
 	private String name;
 
+	/**
+	 * Field for password.
+	 */
 	private String password;
 
+	/**
+	 * Field for surname.
+	 */
 	private String surname;
 
+	/**
+	 * Field for username.
+	 */
 	private String username;
 
-	//bi-directional many-to-one association to Account
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	/**
+	 * Bi-directional many-to-one association to Account
+	 */
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private List<Account> accounts;
 
-	//bi-directional many-to-one association to Bill
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	/**
+	 * Bi-directional many-to-one association to Bill
+	 */
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private List<Bill> bills;
 
-	//bi-directional many-to-one association to Contract
-	@OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+	/**
+	 * Bi-directional many-to-one association to Contract
+	 */
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
 	private List<Contract> contracts;
 
+	/**
+	 * Default CTOR.
+	 */
 	public Client() {
 	}
 
+	/**
+	 * Gets the id.
+	 * 
+	 * @return
+	 */
 	public int getIdClient() {
 		return this.idClient;
 	}
 
+	/**
+	 * Sets the id.
+	 * 
+	 * @param idClient
+	 */
 	public void setIdClient(int idClient) {
 		this.idClient = idClient;
 	}
 
+	/**
+	 * Gets the email.
+	 * 
+	 * @return
+	 */
 	public String getEmail() {
 		return this.email;
 	}
 
+	/**
+	 * Sets the email.
+	 * 
+	 * @param email
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	/**
+	 * Gets the name.
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Sets the name.
+	 * 
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the password.
+	 * 
+	 * @return
+	 */
 	public String getPassword() {
 		return this.password;
 	}
 
+	/**
+	 * Sets the password.
+	 * 
+	 * @param password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * Gets the surname.
+	 * 
+	 * @return
+	 */
 	public String getSurname() {
 		return this.surname;
 	}
 
+	/**
+	 * Sets the surname.
+	 * 
+	 * @param surname
+	 */
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
 
+	/**
+	 * Gets the username.
+	 * 
+	 * @return
+	 */
 	public String getUsername() {
 		return this.username;
 	}
 
+	/**
+	 * Sets the username.
+	 * 
+	 * @param username
+	 */
 	public void setUsername(String username) {
 		this.username = username;
 	}
 
+	/**
+	 * Gets the accounts.
+	 * 
+	 * @return
+	 */
 	public List<Account> getAccounts() {
 		return this.accounts;
 	}
 
+	/**
+	 * Sets the accounts.
+	 * 
+	 * @param accounts
+	 */
 	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
 	}
 
+	/**
+	 * Adds an account.
+	 * 
+	 * @param account
+	 * @return
+	 */
 	public Account addAccount(Account account) {
 		getAccounts().add(account);
 		account.setClient(this);
@@ -106,6 +211,12 @@ public class Client implements Serializable {
 		return account;
 	}
 
+	/**
+	 * Removes an account.
+	 * 
+	 * @param account
+	 * @return
+	 */
 	public Account removeAccount(Account account) {
 		getAccounts().remove(account);
 		account.setClient(null);
@@ -113,14 +224,30 @@ public class Client implements Serializable {
 		return account;
 	}
 
+	/**
+	 * Gets the bills.
+	 * 
+	 * @return
+	 */
 	public List<Bill> getBills() {
 		return this.bills;
 	}
 
+	/**
+	 * Sets the bills.
+	 * 
+	 * @param bills
+	 */
 	public void setBills(List<Bill> bills) {
 		this.bills = bills;
 	}
 
+	/**
+	 * Adds the bill.
+	 * 
+	 * @param bill
+	 * @return
+	 */
 	public Bill addBill(Bill bill) {
 		getBills().add(bill);
 		bill.setClient(this);
@@ -128,6 +255,12 @@ public class Client implements Serializable {
 		return bill;
 	}
 
+	/**
+	 * Removes the bill.
+	 * 
+	 * @param bill
+	 * @return
+	 */
 	public Bill removeBill(Bill bill) {
 		getBills().remove(bill);
 		bill.setClient(null);
@@ -135,14 +268,30 @@ public class Client implements Serializable {
 		return bill;
 	}
 
+	/**
+	 * Gets the contracts.
+	 * 
+	 * @return
+	 */
 	public List<Contract> getContracts() {
 		return this.contracts;
 	}
 
+	/**
+	 * Sets the contracts.
+	 * 
+	 * @param contracts
+	 */
 	public void setContracts(List<Contract> contracts) {
 		this.contracts = contracts;
 	}
 
+	/**
+	 * Adds the contract.
+	 * 
+	 * @param contract
+	 * @return
+	 */
 	public Contract addContract(Contract contract) {
 		getContracts().add(contract);
 		contract.setClient(this);
@@ -150,6 +299,12 @@ public class Client implements Serializable {
 		return contract;
 	}
 
+	/**
+	 * Removes the contract.
+	 * 
+	 * @param contract
+	 * @return
+	 */
 	public Contract removeContract(Contract contract) {
 		getContracts().remove(contract);
 		contract.setClient(null);

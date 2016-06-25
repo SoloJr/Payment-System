@@ -6,8 +6,18 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import consts.Constants;
 
+/**
+ * Class for the Server.
+ * 
+ * @author Florin Sia
+ */
 public class Server {
 
+	/**
+	 * Starts the server.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ExecutorService executor = Executors.newCachedThreadPool();
 		int portNumber;

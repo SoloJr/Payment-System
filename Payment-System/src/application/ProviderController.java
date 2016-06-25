@@ -30,33 +30,87 @@ import server.ClientCall;
 import server.RequestResponse;
 import server.RequestType;
 
+/**
+ * This class is used for the Provider GUI.
+ * 
+ * @author Mircea Solovastru
+ * @version 1.0
+ * @since 2016-06-01
+ */
 public class ProviderController implements Initializable {
 
+	/**
+	 * Button for sending the bill.
+	 * 
+	 * @see Button
+	 */
 	@FXML
 	private Button btnSendBill;
 
+	/**
+	 * TextField for writing the amount of the bill.
+	 * 
+	 * @see TextField
+	 */
 	@FXML
 	private TextField txtAmount;
 
+	/**
+	 * Table View for displaying clients.
+	 * 
+	 * @see TableView
+	 */
 	@FXML
 	private TableView<ClientFX> tblClients;
 
+	/**
+	 * Table Column for username.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<ClientFX, String> colUsername;
 
+	/**
+	 * Table Column for the first name.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<ClientFX, String> colFirstName;
 
+	/**
+	 * Table Column for the last name.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<ClientFX, String> colLastName;
 
+	/**
+	 * Table Column for email.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<ClientFX, String> colEmail;
 
+	/**
+	 * List for displaying clients.
+	 */
 	private ObservableList<ClientFX> data;
 
+	/**
+	 * Field for the current provider.
+	 */
 	private Provider currentProvider;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		data = FXCollections.observableArrayList();
@@ -68,10 +122,18 @@ public class ProviderController implements Initializable {
 		colEmail.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEmail().toString()));
 	}
 
+	/**
+	 * @return Current provider.
+	 */
 	public Provider getCurrentProvider() {
 		return currentProvider;
 	}
 
+	/**
+	 * Sets the current provider.
+	 * 
+	 * @param currentProvider
+	 */
 	public void setCurrentProvider(Provider currentProvider) {
 		System.out.println("Nr. contracte: " + currentProvider.getContracts().size());
 		if (currentProvider.getContracts().isEmpty() == false) {
@@ -86,6 +148,12 @@ public class ProviderController implements Initializable {
 		this.currentProvider = currentProvider;
 	}
 
+	/**
+	 * Method used to issue bill to client. Also, in this method are some
+	 * checks.
+	 * 
+	 * @param event
+	 */
 	public void sendBillToClient(ActionEvent event) {
 		ClientFX clientFX = (ClientFX) tblClients.getSelectionModel().getSelectedItem();
 		if (txtAmount.getText().compareTo("") != 0 && clientFX != null) {

@@ -35,78 +35,201 @@ import server.ClientCall;
 import server.RequestResponse;
 import server.RequestType;
 
+/**
+ * This class is used for the Client GUI.
+ * 
+ * @author Solovastru Mircea
+ * @version 1.0
+ * @since 2016-06-01
+ * @see Initializable
+ */
 public class MainController implements Initializable {
 
+	/**
+	 * Label field for client's name.
+	 * 
+	 * @see Label
+	 */
 	@FXML
 	private Label lblClientName;
 
+	/**
+	 * Label field for client's balance.
+	 * 
+	 * @see Label
+	 */
 	@FXML
 	private Label lblClientBalance;
 
+	/**
+	 * Check box to see all bills or not paid bills.
+	 * 
+	 * @see CheckBox
+	 */
 	@FXML
 	private CheckBox cbViewAllBills;
 
+	/**
+	 * Check box to choose auto payment for bills.
+	 * 
+	 * @see ChechBox
+	 */
 	@FXML
 	private CheckBox cbAutoPay;
 
+	/**
+	 * TableView for bills.
+	 * 
+	 * @see TableView
+	 */
 	@FXML
 	private TableView<BillFX> table;
 
+	/**
+	 * TableView for my providers.
+	 * 
+	 * @see TableView
+	 */
 	@FXML
 	private TableView<ProviderFX> myProvidersTable;
 
+	/**
+	 * TableView for all providers.
+	 * 
+	 * @see TableView
+	 */
 	@FXML
 	private TableView<ProviderFX> providersTable;
 
+	/**
+	 * Button to pay bills.
+	 * 
+	 * @see Button
+	 */
 	@FXML
 	private Button btnPayBills;
 
+	/**
+	 * Button to add provider.
+	 * 
+	 * @see Button
+	 */
 	@FXML
 	private Button btnAddProvider;
 
+	/**
+	 * Button to delete provider.
+	 * 
+	 * @see Button
+	 */
 	@FXML
 	private Button btnDeleteProvider;
 
+	/**
+	 * Table column for id.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<BillFX, Number> id;
 
+	/**
+	 * Table column for amount.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<BillFX, Number> ammount;
 
+	/**
+	 * Table column for details.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<BillFX, String> details;
 
+	/**
+	 * Table column for issue date.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<BillFX, String> issueDate;
 
+	/**
+	 * Table column for due date.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<BillFX, String> dueDate;
 
+	/**
+	 * Table column for name.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<BillFX, String> payDate;
 
 	@FXML
 	private TableColumn<ProviderFX, String> nameMyProvider;
 
+	/**
+	 * Table column for iban.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<ProviderFX, String> ibanMyProvider;
 
+	/**
+	 * Table column for name.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<ProviderFX, String> nameProvider;
 
+	/**
+	 * Table column for iban.
+	 * 
+	 * @see TableColumn
+	 */
 	@FXML
 	private TableColumn<ProviderFX, String> ibanProvider;
 
+	/**
+	 * List for the bills.
+	 */
 	private ObservableList<BillFX> data;
 
+	/**
+	 * List for my providers.
+	 */
 	private ObservableList<ProviderFX> myProviders;
 
+	/**
+	 * List for all the providers.
+	 */
 	private ObservableList<ProviderFX> providers;
 
+	/**
+	 * Field for the current client.
+	 */
 	private Client currentClient;
 
+	/**
+	 * SimpleDateFormat used for displaying the date as a string.
+	 */
 	private SimpleDateFormat sdf;
 
+	/**
+	 * Sets the logged client, and the details needed.
+	 * 
+	 * @param currentClient
+	 */
 	public void setCurrentClient(Client currentClient) {
 		this.lblClientName.setText(currentClient.getName() + " " + currentClient.getSurname());
 		this.lblClientBalance.setText(Double.toString(currentClient.getAccounts().get(0).getBalance()));
@@ -155,14 +278,24 @@ public class MainController implements Initializable {
 		watch.start();
 	}
 
+	/**
+	 * @return the current client
+	 */
 	public Client getCurrentClient() {
 		return this.currentClient;
 	}
 
+	/**
+	 * Closes the application.
+	 */
 	public void close() {
 		Platform.exit();
 	}
 
+	/**
+	 * Method used for a small about box, where the programmers names are
+	 * written.
+	 */
 	public void onAbout() {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Payment Services");
@@ -171,6 +304,10 @@ public class MainController implements Initializable {
 		alert.show();
 	}
 
+	/**
+	 * This check box event is used to see wheather all the bills, or the pay
+	 * bills.
+	 */
 	public void checkBoxHandle() {
 		if (cbViewAllBills.isSelected() == true) {
 			System.out.println(this.currentClient.getBills().size());
@@ -197,6 +334,12 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method used to add a provider. This method establishes a contract between
+	 * the client and the provider.
+	 * 
+	 * @param event
+	 */
 	public void addProvider(ActionEvent event) {
 		ProviderFX providerFX = (ProviderFX) providersTable.getSelectionModel().getSelectedItem();
 		if (providerFX != null) {
@@ -245,6 +388,13 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method used to delete the selected provider. Also, there are some checks:
+	 * in order to unsubscribe from a provider, all the bills related to that
+	 * provider.
+	 * 
+	 * @param event
+	 */
 	public void deleteProvider(ActionEvent event) {
 		ProviderFX providerFX = (ProviderFX) myProvidersTable.getSelectionModel().getSelectedItem();
 		if (providerFX != null) {
@@ -262,9 +412,9 @@ public class MainController implements Initializable {
 			}
 
 			provider = provs.get(0);
-			
+
 			boolean hasPaidAllBills = true;
-			
+
 			for (Bill b : currentClient.getBills()) {
 				if (b.getProvider().getName().compareTo(provider.getName()) == 0) {
 					if (b.getPayDate() == null) {
@@ -273,7 +423,7 @@ public class MainController implements Initializable {
 					}
 				}
 			}
-			
+
 			if (hasPaidAllBills == true) {
 				Contract contract = null;
 
@@ -289,9 +439,9 @@ public class MainController implements Initializable {
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
-				
+
 				System.out.println(contracts.size());
-				
+
 				contract = contracts.get(0);
 
 				RequestResponse<Contract> lookup2 = new RequestResponse<Contract>(Main.host, Main.portNumber);
@@ -310,6 +460,11 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * Method used to pay the selected bill. Also, here are some normal checks,
+	 * whether the client has money to pay the bill, or if the bill was paid
+	 * before.
+	 */
 	public void payBills() {
 		BillFX bill = (BillFX) table.getSelectionModel().getSelectedItem();
 		System.out.println("payBills: " + this.currentClient.getBills().size());
@@ -347,6 +502,12 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -371,7 +532,16 @@ public class MainController implements Initializable {
 		ibanProvider.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIban().toString()));
 	}
 
+	/**
+	 * @author Florin Sia
+	 * @see Thread
+	 */
 	private class WatchForChanges extends Thread {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Thread#run()
+		 */
 		@SuppressWarnings("static-access")
 		public void run() {
 			try {
@@ -386,6 +556,9 @@ public class MainController implements Initializable {
 		}
 	}
 
+	/**
+	 * This method is used to refresh to table in order to send notifications.
+	 */
 	public void refreshTable() {
 		RequestResponse<List<Bill>> lookup = new RequestResponse<List<Bill>>(Main.host, Main.portNumber);
 		lookup.request = RequestType.GET_BILLS_BY_CLIENT;

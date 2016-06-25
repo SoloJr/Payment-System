@@ -1,0 +1,68 @@
+package model;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+
+/**
+ * The persistent class for the account database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Account.findAll", query="SELECT a FROM Account a")
+public class Account implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private int idAccount;
+
+	private double balance;
+
+	//bi-directional many-to-one association to Client
+	@ManyToOne
+	@JoinColumn(name="idClient")
+	private Client client;
+
+	public Account() {
+	}
+
+	public int getIdAccount() {
+		return this.idAccount;
+	}
+
+	public void setIdAccount(int idAccount) {
+		this.idAccount = idAccount;
+	}
+
+	public double getBalance() {
+		return this.balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	/**
+	 * Gets the clients.
+	 * @return
+	 */
+	public Client getClient() {
+		return this.client;
+	}
+
+	/**
+	 * Sets the client.
+	 * @param client
+	 */
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Account [" + idAccount + ", " + balance + "]";
+	}
+}

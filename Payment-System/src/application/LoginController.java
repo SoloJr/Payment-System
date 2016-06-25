@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,24 +22,60 @@ import server.ClientCall;
 import server.RequestResponse;
 import server.RequestType;
 
+/**
+ * The LoginController class implements an application that opens a GUI. Its
+ * options are: login, register and close.
+ * 
+ * @author Mircea Solovastru
+ * @version 1.0
+ * @since 2016-06-01
+ */
 public class LoginController {
 
+	/**
+	 * Label for logo.
+	 * 
+	 * @see Label
+	 */
 	@FXML
 	private Label lblStatus;
 
+	/**
+	 * TextField for username.
+	 * 
+	 * @see TextField
+	 */
 	@FXML
 	private TextField txtUsername;
 
+	/**
+	 * PasswordField for password.
+	 * 
+	 * @see PasswordField
+	 */
 	@FXML
 	private PasswordField txtPassword;
 
+	/**
+	 * Button for closing the window.
+	 * 
+	 * @see Button
+	 */
 	@FXML
 	private Button btnClose;
 
+	/**
+	 * CheckBox for logging as client or provider.
+	 * 
+	 * @see CheckBox
+	 */
 	@FXML
 	private CheckBox cbProvider;
 
-	public void login(ActionEvent event) {
+	/**
+	 * Makes the login, wherever the user is a provider or a client.
+	 */
+	public void login() {
 		if (cbProvider.isSelected() == false) {
 			Client matchedClient = null;
 			RequestResponse<List<Client>> lookup = new RequestResponse<List<Client>>(Main.host, Main.portNumber);
@@ -118,7 +153,10 @@ public class LoginController {
 
 	}
 
-	public void register(ActionEvent event) {
+	/**
+	 * This method makes the registration using the fields from the gui.
+	 */
+	public void register() {
 		try {
 			Stage registerStage = new Stage();
 			Parent root = FXMLLoader.load(getClass().getResource("/application/Register.fxml"));
@@ -132,6 +170,9 @@ public class LoginController {
 		}
 	}
 
+	/**
+	 * Closes the GUI. Use this method to close the GUI.
+	 */
 	public void close() {
 		Stage stage = (Stage) btnClose.getScene().getWindow();
 		stage.close();

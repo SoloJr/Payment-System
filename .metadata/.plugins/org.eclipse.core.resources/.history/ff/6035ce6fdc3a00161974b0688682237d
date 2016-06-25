@@ -1,0 +1,37 @@
+package exceptions;
+
+/**
+ * Class used to have a custom exception.
+ * @author Mircea Solovastru
+ */
+public class PayServException extends Exception {
+	/**
+	 * Serial of the exception.
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Throwing an exception with a message.
+	 * @param message
+	 */
+	public PayServException(String message) {
+		super(message);
+	}
+
+	/**
+	 * Throwing the exception.
+	 * @param cause
+	 */
+	public PayServException(Throwable cause) {
+		super(cause);
+	}
+
+	/**
+	 * Both of the above.
+	 * @param message
+	 * @param cause
+	 */
+	public PayServException(String message, Throwable cause) {
+		super(message, cause);
+	}
+}

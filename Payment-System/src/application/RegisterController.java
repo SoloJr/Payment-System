@@ -21,28 +21,76 @@ import server.ClientCall;
 import server.RequestResponse;
 import server.RequestType;
 
+/**
+ * This class is used for the Register GUI.
+ * 
+ * @author Mircea Solovastru
+ * @since 2016-06-01
+ * @version 1.0
+ */
 public class RegisterController implements Initializable {
+
+	/**
+	 * Label for the logo.
+	 * 
+	 * @see Label
+	 */
 	@FXML
 	private Label lblLogo;
 
+	/**
+	 * Text field for the username.
+	 * 
+	 * @see TextField
+	 */
 	@FXML
 	private TextField txtUsername;
 
+	/**
+	 * PasswordField for the first password.
+	 * 
+	 * @see PasswordField
+	 */
 	@FXML
 	private PasswordField txtPassOne;
 
+	/**
+	 * PasswordField for the second password.
+	 * 
+	 * @see PasswordField
+	 */
 	@FXML
 	private PasswordField txtPassTwo;
 
+	/**
+	 * TextField for name.
+	 * 
+	 * @see TextField
+	 */
 	@FXML
 	private TextField txtName;
 
+	/**
+	 * TextField for surname.
+	 * 
+	 * @see TextField
+	 */
 	@FXML
 	private TextField txtSurname;
 
+	/**
+	 * TextField for email.
+	 * 
+	 * @see TextField
+	 */
 	@FXML
 	private TextField txtEmail;
 
+	/**
+	 * Registers the client.
+	 * 
+	 * @param event
+	 */
 	public void Register(ActionEvent event) {
 		try {
 			if (txtUsername.getText().isEmpty() == true && txtPassOne.getText().isEmpty() == true
@@ -63,6 +111,11 @@ public class RegisterController implements Initializable {
 		}
 	}
 
+	/**
+	 * This method verifies the date written on the GUI.
+	 * 
+	 * @throws RegisterException
+	 */
 	public void verifyDataFromControls() throws RegisterException {
 		if (txtPassOne.getText().compareTo(txtPassTwo.getText()) != 0) {
 			throw new RegisterException("Passwords don't match!");
@@ -86,6 +139,12 @@ public class RegisterController implements Initializable {
 
 	}
 
+	/**
+	 * Method used to create an account for the client and adds it to the
+	 * database.
+	 * 
+	 * @throws RegisterException
+	 */
 	@SuppressWarnings("unused")
 	public void addClient() throws RegisterException {
 		List<Provider> providers = null;
@@ -117,6 +176,12 @@ public class RegisterController implements Initializable {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub

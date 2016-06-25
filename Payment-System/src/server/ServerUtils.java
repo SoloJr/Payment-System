@@ -8,9 +8,24 @@ import model.Client;
 import model.Contract;
 import model.Provider;
 
+/**
+ * Class used to handle the request.
+ * 
+ * @author Florin Sia
+ *
+ */
 public class ServerUtils {
+	/**
+	 * static field for calling methods from DAO.
+	 */
 	private static PayServDAO payServDAO = new PayServDAO();
 
+	/**
+	 * Method used to get values that fulfill criterias.
+	 * 
+	 * @param look
+	 * @return values that fulfills criterias.
+	 */
 	@SuppressWarnings({ "rawtypes" })
 	public static List getValue(RequestResponse look) {
 		List object = null;

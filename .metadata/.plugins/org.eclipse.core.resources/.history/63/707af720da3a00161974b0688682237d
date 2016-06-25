@@ -1,0 +1,158 @@
+package model;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
+
+
+/**
+ * The persistent class for the contract database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Contract.findAll", query="SELECT c FROM Contract c")
+public class Contract implements Serializable {
+	/**
+	 * Field for serial.
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Field for id.
+	 */
+	@Id
+	private int idContract;
+
+	/**
+	 * Field for auto payment.
+	 */
+	private boolean autoPay;
+	
+	/**
+	 * Field to see if the contract is valid.
+	 */
+	private boolean isValid;
+
+	/**
+	 * Field for the date.
+	 */
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
+
+	/**
+	 * Bi-directional many-to-one association to Client
+	 */
+	@ManyToOne
+	@JoinColumn(name="idClient")
+	private Client client;
+
+	/**
+	 * Bi-directional many-to-one association to Provider
+	 */
+	@ManyToOne
+	@JoinColumn(name="idProvider")
+	private Provider provider;
+
+	
+	/**
+	 * Default CTOR.
+	 */
+	public Contract() {
+	}
+
+	/**
+	 * Gets the id.
+	 * @return
+	 */
+	public int getIdContract() {
+		return this.idContract;
+	}
+
+	/**
+	 * Sets the id.
+	 * @param idContract
+	 */
+	public void setIdcontract(int idContract) {
+		this.idContract = idContract;
+	}
+
+	/**
+	 * Gets the auto pay.
+	 * @return
+	 */
+	public boolean getAutoPay() {
+		return this.autoPay;
+	}
+
+	/**
+	 * Sets the auto pay.
+	 * @param autoPay
+	 */
+	public void setAutoPay(boolean autoPay) {
+		this.autoPay = autoPay;
+	}
+
+	/**
+	 * Gets the date.
+	 * @return
+	 */
+	public Date getDate() {
+		return this.date;
+	}
+
+	/**
+	 * Sets the date.
+	 * @param date
+	 */
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	/**
+	 * Gets the client.
+	 * @return
+	 */
+	public Client getClient() {
+		return this.client;
+	}
+
+	/**
+	 * Sets the client.
+	 * @param client
+	 */
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	/**
+	 * Gets the provider.
+	 * @return
+	 */
+	public Provider getProvider() {
+		return this.provider;
+	}
+
+	/**
+	 * Sets the provider.
+	 * @param provider
+	 */
+	public void setProvidxer(Provider provider) {
+		this.provider = provider;
+	}
+
+	/**
+	 * Gets the isValid.
+	 * @return
+	 */
+	public boolean isValid() {
+		return isValid;
+	}
+
+	/**
+	 * Sets the isValid.
+	 * @param isValid
+	 */
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
+	}
+}

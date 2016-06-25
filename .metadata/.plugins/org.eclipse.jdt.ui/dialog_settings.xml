@@ -54,6 +54,16 @@
 		<item value="D:\ProiectJava\Payment-System\Payment-System\doc" key="destdir"/>
 		<item value="false" key="openinbrowser"/>
 		<section name="projects">
+			<section name="Payment-System">
+				<item value="D:\ProiectJava\Payment-System\Payment-System\javadoc.xml" key="antpath"/>
+				<item value="D:\ProiectJava\Payment-System\Payment-System\doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
+			<section name="RemoteSystemsTempFiles">
+				<item value="D:\ProiectJava\Payment-System\RemoteSystemsTempFiles\javadoc.xml" key="antpath"/>
+				<item value="D:\ProiectJava\Payment-System\RemoteSystemsTempFiles\doc" key="destdir"/>
+				<item value="" key="href"/>
+			</section>
 		</section>
 	</section>
 	<section name="RenameInformationPopup">

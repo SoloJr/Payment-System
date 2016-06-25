@@ -18,29 +18,83 @@ import model.Client;
 import model.Contract;
 import model.Provider;
 
+/**
+ * Class used to send bills to the client/s
+ * 
+ * @author Florin Sia
+ */
 public class AutomaticInvoice {
+	/**
+	 * Field for the amount.
+	 */
 	private static double amount = 10;
+
+	/**
+	 * Field for the bill number.
+	 */
 	private static int billNumber = 600;
+
+	/**
+	 * Field for the port.
+	 */
 	private static int port = Constants.DEFAULT_PORT;
+
+	/**
+	 * Field for the host.
+	 */
 	private static String host = "localhost";
+
+	/**
+	 * Calendar used at bills creation.
+	 */
 	Calendar cal = Calendar.getInstance();
+
+	/**
+	 * DAO object.
+	 */
 	PayServDAO dao = null;
+
+	/**
+	 * The list of providers.
+	 */
 	List<Provider> providers = null;
+
+	/**
+	 * The list of clients.
+	 */
 	List<Client> clients = null;
+
+	/**
+	 * Field for the executor.
+	 */
 	ExecutorService pool = Executors.newFixedThreadPool(3);
+
+	/**
+	 * Field for the socket.
+	 */
 	public Socket socket = null;
 
+	/**
+	 * CTOR used to initialize the server and creates the objects for DAO and
+	 * providers.
+	 */
 	public AutomaticInvoice() {
 		initSvConnection();
 		dao = new PayServDAO();
 		providers = dao.getAllProviders();
 	}
 
+	/**
+	 * Method to start a thread.
+	 */
 	public void startThread() {
 		EmitInvoice em = new EmitInvoice();
 		em.start();
 	}
 
+	/**
+	 * Method to start a connection to the server
+	 */
 	public void initSvConnection() {
 		try {
 			socket = new Socket(host, port);
@@ -49,6 +103,15 @@ public class AutomaticInvoice {
 		}
 	}
 
+	/**
+	 * Method used to create a bill.
+	 * 
+	 * @param currentProvider
+	 *            -> the provider that sends the bill.
+	 * @param client
+	 *            -> that will receive the bill
+	 * @return the bill
+	 */
 	public static Bill createBill(Provider currentProvider, Client client) {
 		Bill bill = new Bill();
 		bill.setAmount(amount);
@@ -65,6 +128,13 @@ public class AutomaticInvoice {
 		return bill;
 	}
 
+	/**
+	 * Method used to get the clients of a provider.
+	 * 
+	 * @param provider
+	 *            -> the specified provider
+	 * @return a list of clients.
+	 */
 	public List<Client> getSubsribers(Provider provider) {
 		List<Client> subscribers = new ArrayList<Client>();
 
@@ -88,6 +158,14 @@ public class AutomaticInvoice {
 		return subscribers;
 	}
 
+	/**
+	 * Method used to send bills.
+	 * 
+	 * @param provider
+	 *            -> he sends the bill
+	 * @param subscribers
+	 *            -> to the clients.
+	 */
 	public void sendBills(Provider provider, List<Client> subscribers) {
 		for (Client client : subscribers) {
 			Bill bill = createBill(provider, client);
@@ -99,7 +177,17 @@ public class AutomaticInvoice {
 		}
 	}
 
+	/**
+	 * Nested class to send bills.
+	 * 
+	 * @author Florin Sia
+	 */
 	public class EmitInvoice extends Thread {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Thread#run()
+		 */
 		@SuppressWarnings("static-access")
 		public void run() {
 			try {
@@ -119,6 +207,11 @@ public class AutomaticInvoice {
 		}
 	}
 
+	/**
+	 * Launches the thread.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		AutomaticInvoice sendInvoices = new AutomaticInvoice();
 		sendInvoices.startThread();

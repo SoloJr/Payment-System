@@ -8,15 +8,43 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.Callable;
 
+/**
+ * Class used to ask for data from the server.
+ * 
+ * @author Florin Sia
+ * @see Callable
+ * @param <T>
+ */
 public class ClientCall<T> implements Callable<T> {
+	/**
+	 * Field for Request Response.
+	 */
 	private RequestResponse<T> lookup;
-	OutputStream out = null;
-	ObjectOutputStream stream = null;
 
+	/**
+	 * Field for output stream.
+	 */
+	private OutputStream out = null;
+
+	/**
+	 * Field for object output stream.
+	 */
+	private ObjectOutputStream stream = null;
+
+	/**
+	 * CTOR that sets the RequestResponse.
+	 * 
+	 * @param lookup
+	 */
 	public ClientCall(RequestResponse<T> lookup) {
 		this.lookup = lookup;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.concurrent.Callable#call()
+	 */
 	@SuppressWarnings({ "resource", "unchecked" })
 	@Override
 	public T call() throws IOException {

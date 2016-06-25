@@ -1,0 +1,199 @@
+package model;
+
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Date;
+
+
+/**
+ * The persistent class for the bill database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Bill.findAll", query="SELECT b FROM Bill b")
+public class Bill implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Field for id.
+	 */
+	@Id
+	private int idBill;
+
+	/**
+	 * Field for amount.
+	 */
+	private double amount;
+
+	/**
+	 * Field for details.
+	 */
+	private String details;
+
+	/**
+	 * Field for due date.
+	 */
+	@Temporal(TemporalType.DATE)
+	private Date dueDate;
+
+	/**
+	 * Field for issue date.
+	 */
+	@Temporal(TemporalType.DATE)
+	private Date issueDate;
+
+	/**
+	 * Field for pay date.
+	 */
+	@Temporal(TemporalType.DATE)
+	private Date payDate;
+
+	/**
+	 * Bi-directional many-to-one association to Client
+	 */
+	@ManyToOne
+	@JoinColumn(name="idClient")
+	private Client client;
+
+	/**
+	 * Bi-directional many-to-one association to Provider
+	 */
+	@ManyToOne
+	@JoinColumn(name="idProvider")
+	private Provider provider;
+
+	/**
+	 * Default CTOR.
+	 */
+	public Bill() {
+	}
+
+	/**
+	 * Gets the id.
+	 * @return
+	 */
+	public int getIdBill() {
+		return this.idBill;
+	}
+
+	/**
+	 * Sets the id.
+	 * @param idBill
+	 */
+	public void setIdBill(int idBill) {
+		this.idBill = idBill;
+	}
+
+	/**
+	 * Gets the amount.
+	 * @return
+	 */
+	public double getAmount() {
+		return this.amount;
+	}
+
+	/**
+	 * Sets the amount.
+	 * @param amount
+	 */
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	/**
+	 * Gets the details.
+	 * @return
+	 */
+	public String getDetails() {
+		return this.details;
+	}
+
+	/**
+	 * Sets the details.
+	 * @param details
+	 */
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	/**
+	 * Gets the due date.
+	 * @return
+	 */
+	public Date getDueDate() {
+		return this.dueDate;
+	}
+
+	/**
+	 * Sets the due date.
+	 * @param dueDate
+	 */
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	/**
+	 * Gets the issue date.
+	 * @return
+	 */
+	public Date getIssueDate() {
+		return this.issueDate;
+	}
+
+	/**
+	 * Sets the issue date.
+	 * @param issueDate
+	 */
+	public void setIssueDate(Date issueDate) {
+		this.issueDate = issueDate;
+	}
+
+	/**
+	 * Gets the pay date.
+	 * @return
+	 */
+	public Date getPayDate() {
+		return this.payDate;
+	}
+
+	/**
+	 * Sets the pay date.
+	 * @param payDate
+	 */
+	public void setPayDate(Date payDate) {
+		this.payDate = payDate;
+	}
+
+	/**
+	 * Gets the client.
+	 * @return
+	 */
+	public Client getClient() {
+		return this.client;
+	}
+
+	/**
+	 * Sets the client.
+	 * @param client
+	 */
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	/**
+	 * Gets the provider.
+	 * @return
+	 */
+	public Provider getProvider() {
+		return this.provider;
+	}
+
+	/**
+	 * Sets the provider.
+	 * @param provider
+	 */
+	public void setProvider(Provider provider) {
+		this.provider = provider;
+	}
+
+}

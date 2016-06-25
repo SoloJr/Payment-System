@@ -1,0 +1,81 @@
+package server;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * 
+ * @author Florin Sia
+ * @see Serializable
+ * @param <T>
+ */
+public class RequestResponse<T> implements Serializable {
+	/**
+	 * static field for the serial.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * The host.
+	 */
+	
+	public String host;
+	/**
+	 * The port.
+	 */
+	
+	public int port;
+	
+	/**
+	 * The type of the request.
+	 * @see RequestType
+	 */
+	public RequestType request;
+	
+	/**
+	 * Generic list of parameteres.
+	 */
+	public List<Object> parameters = new ArrayList<Object>();
+	
+	/**
+	 * Generic field for the response.
+	 */
+	public T response;
+
+	/**
+	 * CTOR that sets the host and port.
+	 * @param host
+	 * @param port
+	 */
+	public RequestResponse(String host, int port) {
+		this.host = host;
+		this.port = port;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof RequestResponse) {
+			RequestResponse lookup = (RequestResponse) obj;
+			if (host.equals(lookup.host) && port == lookup.port) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		int hash = 7;
+		hash = 97 * hash + Objects.hashCode(this.host);
+		hash = 97 * hash + this.port;
+		return hash;
+	}
+
+}

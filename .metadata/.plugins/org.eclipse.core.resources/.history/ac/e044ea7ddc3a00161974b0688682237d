@@ -1,0 +1,148 @@
+package model;
+
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
+/**
+ * Class used to display Clients in the table view.
+ * @see Client
+ * @author Mircea Solovastru
+ *
+ */
+public class ClientFX {
+	/**
+	 * Field for id.
+	 */
+	private SimpleIntegerProperty idClient;
+
+	/**
+	 * Field for email.
+	 */
+	private SimpleStringProperty email;
+
+	/**
+	 * Field for name.
+	 */
+	private SimpleStringProperty name;
+
+	/**
+	 * Field for password.
+	 */
+	private SimpleStringProperty password;
+	
+	/**
+	 * Field for surname.
+	 */
+	private SimpleStringProperty surname;
+	
+	/**
+	 * Field for username.
+	 */
+	private SimpleStringProperty username;
+
+	/**
+	 * CTOR to set values to the fields.
+	 * @param idClient
+	 * @param email
+	 * @param name
+	 * @param password
+	 * @param surname
+	 * @param username
+	 */
+	public ClientFX(int idClient, String email, String name, String password, String surname, String username) {
+		this.idClient = new SimpleIntegerProperty(idClient);
+		this.email = new SimpleStringProperty(email);
+		this.name = new SimpleStringProperty(name);
+		this.password = new SimpleStringProperty(password);
+		this.surname = new SimpleStringProperty(surname);
+		this.username = new SimpleStringProperty(username);
+	}
+
+	/**
+	 * Gets the id.
+	 * @return
+	 */
+	public int getIdClient() {
+		return idClient.get();
+	}
+
+	/**
+	 * Sets the id.
+	 * @param idClient
+	 */
+	public void setIdClient(int idClient) {
+		this.idClient = new SimpleIntegerProperty(idClient);
+	}
+
+	/**
+	 * Gets the email.
+	 * @return
+	 */
+	public String getEmail() {
+		return email.get();
+	}
+
+	/**
+	 * Sets the email.
+	 * @param email
+	 */
+	public void setEmail(String email) {
+		this.email = new SimpleStringProperty(email);
+	}
+
+	/**
+	 * Gets the name.
+	 * @return
+	 */
+	public String getName() {
+		return name.get();
+	}
+
+	/**
+	 * Sets the name.
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = new SimpleStringProperty(name);
+	}
+
+	/**
+	 * Gets the password.
+	 * @return
+	 */
+	public String getPassword() {
+		return password.get();
+	}
+
+	/**
+	 * Sets the password.
+	 * @param password
+	 */
+	public void setPassword(String password) {
+		this.password = new SimpleStringProperty(password);
+	}
+
+	/**
+	 * Gets the surname.
+	 * @return
+	 */
+	public String getSurname() {
+		return surname.get();
+	}
+
+	/**
+	 * Sets the surname.
+	 * @param surname
+	 */
+	public void setSurname(String surname) {
+		this.surname = new SimpleStringProperty(surname);
+	}
+
+	public String getUsername() {
+		return username.get();
+	}
+
+	public void setUsername(String username) {
+		this.username = new SimpleStringProperty(username);
+	}
+}

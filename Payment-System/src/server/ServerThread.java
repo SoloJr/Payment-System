@@ -7,13 +7,30 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * The class that starts the connection between the server and the client in a
+ * new Thread.
+ * 
+ * @author Florin Sia
+ */
 public class ServerThread implements Runnable {
+	/**
+	 * Field for the socket.
+	 */
 	private Socket clientSocket;
 
+	/**
+	 * CTOR in which it sets the socket.
+	 * 
+	 * @param socket
+	 */
 	public ServerThread(Socket socket) {
 		clientSocket = socket;
 	}
 
+	/**
+	 * Reads the request stream sent by the client and sends back the answer.
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void accept() {
 		OutputStream out = null;
@@ -46,6 +63,11 @@ public class ServerThread implements Runnable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		accept();
