@@ -135,7 +135,7 @@ public class LoginController {
 					loader.setLocation(getClass().getResource("/application/Provider.fxml"));
 					loader.load();
 					Parent root = loader.getRoot();
-					Scene scene = new Scene(root, 600, 500);
+					Scene scene = new Scene(root, 1200, 600);
 					mainStage.setScene(scene);
 					mainStage.setTitle("Payment Services");
 

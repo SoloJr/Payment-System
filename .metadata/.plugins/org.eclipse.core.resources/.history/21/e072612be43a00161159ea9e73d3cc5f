@@ -1,0 +1,387 @@
+package application;
+
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import model.Account;
+import model.Bill;
+import model.BillFX;
+import model.Client;
+import model.ClientFX;
+import model.Contract;
+import model.Provider;
+import server.ClientCall;
+import server.RequestResponse;
+import server.RequestType;
+
+/**
+ * This class is used for the Provider GUI.
+ * 
+ * @author Mircea Solovastru
+ * @version 1.0
+ * @since 2016-06-01
+ */
+/**
+ * @author Florin
+ *
+ */
+public class ProviderController implements Initializable {
+
+	/**
+	 * Button for sending the bill.
+	 * 
+	 * @see Button
+	 */
+	@FXML
+	private Button btnSendBill;
+
+	/**
+	 * TextField for writing the amount of the bill.
+	 * 
+	 * @see TextField
+	 */
+	@FXML
+	private TextField txtAmount;
+
+	/**
+	 * Table View for displaying clients.
+	 * 
+	 * @see TableView
+	 */
+	@FXML
+	private TableView<ClientFX> tblClients;
+
+	/**
+	 * Table Column for username.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<ClientFX, String> colUsername;
+
+	/**
+	 * Table Column for the first name.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<ClientFX, String> colFirstName;
+
+	/**
+	 * Table Column for the last name.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<ClientFX, String> colLastName;
+
+	/**
+	 * Table Column for email.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<ClientFX, String> colEmail;
+
+	/**
+	 * List for displaying clients.
+	 */
+	private ObservableList<ClientFX> data;
+
+	/**
+	 * Field for the current provider.
+	 */
+	private Provider currentProvider;
+
+	/**
+	 * Table View for displaying client's bills.
+	 * 
+	 * @see TableView
+	 */
+	@FXML
+	private TableView<BillFX> invoiceTable;
+
+	
+	/**
+	 * Table Column for the id of the invoice.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<BillFX, Number> invoiceId;
+
+	/**
+	 * Table Column for the amount of the invoice.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<BillFX, Number> invoiceAmount;
+
+	/**
+	 * Table Column for invoice details.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<BillFX, String> invoiceDetails;
+
+	/**
+	 * Table Column for the invoice issue date.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<BillFX, String> invoiceIssueDate;
+
+	/**
+	 * Table Column for the invoice due date.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<BillFX, String> invoiceDueDate;
+
+	
+	/**
+	 * Table Column for the invoice pay date.
+	 * 
+	 * @see TableColumn
+	 */
+	@FXML
+	private TableColumn<BillFX, String> invoicePayDate;
+
+	@FXML
+	private Label lblTotal;
+
+	@FXML
+	private Label lblClientText;
+
+	@FXML
+	private Label lblClientValue;
+	private Double total;
+	private ObservableList<BillFX> invoiceData;
+	private ObservableList<Client> subscribers;
+	private Client currentClient;
+
+	private SimpleDateFormat sdf;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
+	 */
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		data = FXCollections.observableArrayList();
+		tblClients.setPlaceholder(new Label("Niciun client!"));
+		tblClients.setItems(data);
+		colUsername.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUsername().toString()));
+		colFirstName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getSurname().toString()));
+		colLastName.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName().toString()));
+		colEmail.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEmail().toString()));
+
+		subscribers = FXCollections.observableArrayList();
+		sdf = new SimpleDateFormat("dd.MM.yyyy");
+		total = 0.0;
+		invoiceTable.setPlaceholder(new Label("Nici o Factura!"));
+		invoiceData = FXCollections.observableArrayList();
+		invoiceTable.setItems(invoiceData);
+		invoiceId.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdBill()));
+		invoiceAmount.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getAmmount()));
+		invoiceDetails.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDetails()));
+		invoiceIssueDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIssueDate().toString()));
+		invoiceDueDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDueDate().toString()));
+		invoicePayDate.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPayDate().toString()));
+
+	}
+
+	public void selectedItemChanged() {
+		ClientFX selectedClient = (ClientFX) tblClients.getSelectionModel().getSelectedItem();
+		Client client = new Client();
+		client.setIdClient(selectedClient.getIdClient());
+		client.setName(selectedClient.getName());
+		viewClientBill(client);
+	}
+
+	/**
+	 * @return Current provider.
+	 */
+	public Provider getCurrentProvider() {
+		return currentProvider;
+	}
+
+	/**
+	 * Sets the current provider.
+	 * 
+	 * @param currentProvider
+	 */
+	public void setCurrentProvider(Provider currentProvider) {
+		System.out.println("Nr. contracte: " + currentProvider.getContracts().size());
+		if (currentProvider.getContracts().isEmpty() == false) {
+			for (Contract contract : currentProvider.getContracts()) {
+				Client client = contract.getClient();
+				subscribers.add(client);
+				data.add(new ClientFX(client.getIdClient(), client.getEmail(), client.getName(), client.getPassword(),
+						client.getSurname(), client.getUsername()));
+				for (Bill bill : client.getBills()) {
+					if (bill.getProvider().getIdProvider() == currentProvider.getIdProvider()
+							&& bill.getPayDate() == null) {
+						total += bill.getAmount();
+					}
+				}
+				lblTotal.setText(total.toString());
+			}
+		}
+		this.currentProvider = currentProvider;
+	}
+
+	/**
+	 * Method used to issue bill to client. Also, in this method are some
+	 * checks.
+	 * 
+	 * @param event
+	 */
+	public void sendBillToClient(ActionEvent event) {
+		ClientFX clientFX = (ClientFX) tblClients.getSelectionModel().getSelectedItem();
+		if (txtAmount.getText().compareTo("") != 0 && clientFX != null) {
+			Bill bill = new Bill();
+			bill.setAmount(Double.parseDouble(txtAmount.getText()));
+			Date issueDate = Calendar.getInstance().getTime();
+			bill.setIssueDate(issueDate);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(issueDate);
+			cal.add(Calendar.DATE, 10);
+			bill.setDueDate(cal.getTime());
+			bill.setPayDate(null);
+			bill.setProvider(currentProvider);
+			System.out.println(clientFX.getUsername());
+			RequestResponse<List<Bill>> lookupForBills = new RequestResponse<List<Bill>>(Main.host, Main.portNumber);
+			lookupForBills.request = RequestType.GET_BILLS;
+			ClientCall<List<Bill>> callableBills = new ClientCall<List<Bill>>(lookupForBills);
+			List<Bill> bills = null;
+			try {
+				Future<List<Bill>> future = Main.clientExecutor.submit(callableBills);
+				bills = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+			bill.setDetails(
+					"Factura " + bills.get(bills.size() - 1).getIdBill() + " " + this.currentProvider.getName());
+			Client client = null;
+			RequestResponse<List<Client>> lookup = new RequestResponse<List<Client>>(Main.host, Main.portNumber);
+			lookup.request = RequestType.GET_CLIENT_BY_USERNAME;
+			lookup.parameters.add(clientFX.getUsername());
+			ClientCall<List<Client>> callable = new ClientCall<List<Client>>(lookup);
+			List<Client> clients = null;
+			try {
+				Future<List<Client>> future = Main.clientExecutor.submit(callable);
+				clients = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+			client = clients.get(0);
+
+			bill.setClient(client);
+
+			RequestResponse<Bill> lookup2 = new RequestResponse<Bill>(Main.host, Main.portNumber);
+			lookup2.request = RequestType.ADD_BILL;
+			lookup2.parameters.add(bill);
+			ClientCall<Bill> callable2 = new ClientCall<Bill>(lookup2);
+			Main.clientExecutor.submit(callable2);
+
+			Main.createAlert(AlertType.CONFIRMATION, "Factura", "Factura trimisã cãtre client!");
+			System.out.println(client.getContracts().size());
+			for (Contract c : client.getContracts()) {
+				if (c.getProvider().getName().compareTo(currentProvider.getName()) == 0) {
+					if (c.getAutoPay() == true) {
+						int accountId = client.getAccounts().get(0).getIdAccount();
+						double newBalance = client.getAccounts().get(0).getBalance() - bill.getAmount();
+						if (newBalance >= 0) {
+							RequestResponse<Account> lookupAccount = new RequestResponse<>(Main.host, Main.portNumber);
+							lookupAccount.request = RequestType.UPDATE_BALANCE;
+							lookupAccount.parameters.add(accountId);
+							lookupAccount.parameters.add(newBalance);
+							ClientCall<Account> callableAccount = new ClientCall<Account>(lookupAccount);
+							Main.clientExecutor.submit(callableAccount);
+
+							RequestResponse<Bill> lookupBill = new RequestResponse<Bill>(Main.host, Main.portNumber);
+							lookupBill.request = RequestType.PAY_BILL_BY_DETAIL;
+							lookupBill.parameters.add(bill.getDetails());
+							ClientCall<Bill> callableBill = new ClientCall<Bill>(lookupBill);
+							Main.clientExecutor.submit(callableBill);
+						}
+					} else {
+						total += bill.getAmount();
+						lblTotal.setText(total.toString());
+						Double newValue = Double.valueOf(lblClientValue.getText());
+						newValue += bill.getAmount();
+						lblClientValue.setText(newValue.toString());
+					}
+				}
+			}
+		} else {
+			Main.createAlert(AlertType.ERROR, "Bill", "Unexpected error!");
+		}
+	}
+
+	/**
+	 * Method used to update bill table when selecting a client from clients
+	 * table
+	 * 
+	 * @param client
+	 */
+	public void viewClientBill(Client client) {
+		RequestResponse<List<Bill>> lookup = new RequestResponse<List<Bill>>(Main.host, Main.portNumber);
+		lookup.request = RequestType.GET_BILLS_BY_CLIENT;
+		lookup.parameters.add(client);
+		ClientCall<List<Bill>> callable = new ClientCall<List<Bill>>(lookup);
+		List<Bill> bills = null;
+		try {
+			Future<List<Bill>> future = Main.clientExecutor.submit(callable);
+			bills = future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+		invoiceData.clear();
+		Double clientDept = 0.0;
+		for (Bill bill : bills) {
+			if (bill.getProvider().getIdProvider() == currentProvider.getIdProvider()) {
+				if (bill.getPayDate() != null) {
+					invoiceData.add(new BillFX(bill.getIdBill(), bill.getAmount(), bill.getDetails(),
+							sdf.format(bill.getIssueDate()), sdf.format(bill.getDueDate()),
+							sdf.format(bill.getPayDate())));
+				} else {
+					invoiceData.add(new BillFX(bill.getIdBill(), bill.getAmount(), bill.getDetails(),
+							sdf.format(bill.getIssueDate()), sdf.format(bill.getDueDate()), "-"));
+					clientDept += bill.getAmount();
+				}
+			}
+		}
+		lblClientText.setText("In wich from " + client.getName());
+		lblClientValue.setText(clientDept.toString());
+	}
+}

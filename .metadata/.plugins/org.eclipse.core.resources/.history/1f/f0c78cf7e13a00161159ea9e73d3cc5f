@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ProviderController">
+	<tabs>
+		<Tab text="Clients">
+			<content>
+				<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+					<children>
+						<TableView fx:id="tblClients" layoutX="14.0" layoutY="75.0" prefHeight="375.0" prefWidth="467.0">
+							<columns>
+								<TableColumn fx:id="colUsername" prefWidth="113.0" text="Username" />
+								<TableColumn fx:id="colFirstName" prefWidth="79.0" text="Surname" />
+								<TableColumn fx:id="colLastName" prefWidth="107.0" text="Name" />
+								<TableColumn fx:id="colEmail" prefWidth="166.0" text="Email" />
+							</columns>
+						</TableView>
+						<Label layoutX="14.0" layoutY="24.0" prefHeight="27.0" prefWidth="75.0" text="Amount: ">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<Button fx:id="btnSendBill" layoutX="350.0" layoutY="18.0" mnemonicParsing="false" onAction="#sendBillToClient" text="Send bill">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Button>
+						<TextField fx:id="txtAmount" layoutX="89.0" layoutY="18.0">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</TextField>
+						     <TableView fx:id="invoiceTable" layoutX="532.0" layoutY="79.0" prefHeight="370.0" prefWidth="659.0">
+                    <columns>
+                      <TableColumn fx:id="invoiceId" prefWidth="101.0" text="Nbr" />
+                      <TableColumn fx:id="invoiceAmount" prefWidth="82.0" text="Amount" />		
+					  <TableColumn fx:id="invoiceIssueDate" prefWidth="137.0" text="Invoice Date" />
+					  <TableColumn fx:id="invoiceDueDate" prefWidth="91.0" text="Due Date" />
+					  <TableColumn fx:id="invoicePayDate" prefWidth="69.0" text="Payed On" />
+					  <TableColumn fx:id="invoiceDetails" prefWidth="75.0" text="Details" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <Label layoutX="24.0" layoutY="480.0" prefHeight="31.0" prefWidth="185.0" text="Remained to be cashed" />
+                  <Label fx:id="lblTotal" layoutX="397.0" layoutY="485.0" prefHeight="21.0" prefWidth="80.0" text="0" />
+                  <Label fx:id="lblClientText" layoutX="553.0" layoutY="485.0" prefHeight="21.0" prefWidth="326.0" text="In wich from " />
+                  <Label fx:id="lblClientValue" layoutX="1025.0" layoutY="485.0" prefHeight="21.0" prefWidth="59.0" text="0" />
+					</children>
+				</AnchorPane>
+					</children>
+				</AnchorPane>
+			</content>
+		</Tab>
+	</tabs>
+</TabPane>
