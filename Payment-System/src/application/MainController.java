@@ -65,6 +65,9 @@ public class MainController implements Initializable {
 	private Button btnAddProvider;
 
 	@FXML
+	private Button btnDeleteProvider;
+
+	@FXML
 	private TableColumn<BillFX, Number> id;
 
 	@FXML
@@ -238,9 +241,73 @@ public class MainController implements Initializable {
 
 			myProviders.add(providerFX);
 		} else {
-			Main.createAlert(AlertType.ERROR, "Furnizori", "Alege un furnizor!");
+			Main.createAlert(AlertType.ERROR, "Providers", "Choose a provider!");
 		}
+	}
 
+	public void deleteProvider(ActionEvent event) {
+		ProviderFX providerFX = (ProviderFX) myProvidersTable.getSelectionModel().getSelectedItem();
+		if (providerFX != null) {
+			Provider provider = null;
+			RequestResponse<List<Provider>> lookup = new RequestResponse<List<Provider>>(Main.host, Main.portNumber);
+			lookup.request = RequestType.GET_PROVIDER_BY_NAME;
+			lookup.parameters.add(providerFX.getName());
+			ClientCall<List<Provider>> callable = new ClientCall<List<Provider>>(lookup);
+			List<Provider> provs = null;
+			try {
+				Future<List<Provider>> future = Main.clientExecutor.submit(callable);
+				provs = future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+			provider = provs.get(0);
+			
+			boolean hasPaidAllBills = true;
+			
+			for (Bill b : currentClient.getBills()) {
+				if (b.getProvider().getName().compareTo(provider.getName()) == 0) {
+					if (b.getPayDate() == null) {
+						hasPaidAllBills = false;
+						break;
+					}
+				}
+			}
+			
+			if (hasPaidAllBills == true) {
+				Contract contract = null;
+
+				RequestResponse<List<Contract>> lookup3 = new RequestResponse<>(Main.host, Main.portNumber);
+				lookup3.request = RequestType.GET_CONTRACT_BY_DETAILS;
+				lookup3.parameters.add(currentClient);
+				lookup3.parameters.add(provider);
+				ClientCall<List<Contract>> callable3 = new ClientCall<>(lookup3);
+				List<Contract> contracts = null;
+				try {
+					Future<List<Contract>> future = Main.clientExecutor.submit(callable3);
+					contracts = future.get();
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+				
+				System.out.println(contracts.size());
+				
+				contract = contracts.get(0);
+
+				RequestResponse<Contract> lookup2 = new RequestResponse<Contract>(Main.host, Main.portNumber);
+				lookup2.request = RequestType.DELETE_CONTRACT;
+				lookup2.parameters.add(contract.getIdContract());
+				ClientCall<Contract> callable2 = new ClientCall<>(lookup2);
+				Main.clientExecutor.submit(callable2);
+				myProviders.remove(providerFX);
+				providers.add(providerFX);
+			} else {
+				Main.createAlert(AlertType.ERROR, "Providers", "Pay your bills first!");
+			}
+
+		} else {
+			Main.createAlert(AlertType.ERROR, "Providers", "Choose one provider!");
+		}
 	}
 
 	public void payBills() {
@@ -272,11 +339,11 @@ public class MainController implements Initializable {
 				data.remove(bill);
 
 			} else {
-				System.out.println("no money to pay!");
+				Main.createAlert(AlertType.ERROR, "Bills", "No money to pay the selected bill!");
 			}
 
 		} else {
-			System.out.println("Bill already paid!");
+			Main.createAlert(AlertType.ERROR, "Bills", "Bill already paid!");
 		}
 	}
 
@@ -286,11 +353,11 @@ public class MainController implements Initializable {
 		data = FXCollections.observableArrayList();
 		myProviders = FXCollections.observableArrayList();
 		providers = FXCollections.observableArrayList();
-		table.setPlaceholder(new Label("Nicio factura!"));
+		table.setPlaceholder(new Label("No bill!"));
 		table.setItems(data);
-		myProvidersTable.setPlaceholder(new Label("Niciun furnizor!"));
+		myProvidersTable.setPlaceholder(new Label("No providers!"));
 		myProvidersTable.setItems(myProviders);
-		providersTable.setPlaceholder(new Label("Niciun furnizor!"));
+		providersTable.setPlaceholder(new Label("No providers!"));
 		providersTable.setItems(providers);
 		id.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getIdBill()));
 		ammount.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getAmmount()));
@@ -303,7 +370,9 @@ public class MainController implements Initializable {
 		ibanMyProvider.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIban().toString()));
 		ibanProvider.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getIban().toString()));
 	}
-	private class WatchForChanges extends Thread{
+
+	private class WatchForChanges extends Thread {
+		@SuppressWarnings("static-access")
 		public void run() {
 			try {
 				while (true) {
@@ -311,12 +380,13 @@ public class MainController implements Initializable {
 					this.sleep(15000);
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				System.out.println();
 			}
 
-		}	
+		}
 	}
-	public void refreshTable(){
+
+	public void refreshTable() {
 		RequestResponse<List<Bill>> lookup = new RequestResponse<List<Bill>>(Main.host, Main.portNumber);
 		lookup.request = RequestType.GET_BILLS_BY_CLIENT;
 		lookup.parameters.add(currentClient);
@@ -325,8 +395,8 @@ public class MainController implements Initializable {
 		try {
 			Future<List<Bill>> future = Main.clientExecutor.submit(callable);
 			bills = future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println();
 		}
 		currentClient.setBills(bills);
 		checkBoxHandle();

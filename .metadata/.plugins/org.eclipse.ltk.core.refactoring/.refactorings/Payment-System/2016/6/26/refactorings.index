@@ -1,3 +1,4 @@
 1466705695262	Rename field 'idcontract'
 1466705703068	Rename method 'getIdcontract'
 1466705715052	Rename local variable 'idcontract'
+1466844643490	Encapsulate field 'isValid'

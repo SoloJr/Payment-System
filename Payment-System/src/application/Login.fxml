@@ -7,50 +7,39 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="350.0" prefWidth="300.0"
-	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="application.LoginController">
+<AnchorPane prefHeight="350.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
 	<children>
-		<Button layoutX="38.0" layoutY="218.0" mnemonicParsing="false"
-			onAction="#login" prefHeight="39.0" prefWidth="100.0" text="Login">
+		<Button layoutX="38.0" layoutY="218.0" mnemonicParsing="false" onAction="#login" prefHeight="39.0" prefWidth="100.0" text="Login">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</Button>
-		<TextField fx:id="txtUsername" layoutX="38.0" layoutY="87.0"
-			prefHeight="31.0" prefWidth="224.0" promptText="Nume de utilizator...">
+		<TextField fx:id="txtUsername" layoutX="38.0" layoutY="87.0" prefHeight="31.0" prefWidth="224.0" promptText="Username...">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</TextField>
-		<PasswordField fx:id="txtPassword" layoutX="38.0"
-			layoutY="162.0" prefHeight="31.0" prefWidth="224.0" promptText="Parola...">
+		<PasswordField fx:id="txtPassword" layoutX="38.0" layoutY="162.0" prefHeight="31.0" prefWidth="224.0" promptText="Password...">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</PasswordField>
-		<Label fx:id="lblStatus" alignment="CENTER" layoutX="38.0"
-			layoutY="34.0" prefHeight="39.0" prefWidth="224.0" text="Payment Services"
-			textAlignment="CENTER" textFill="BLUE">
+		<Label fx:id="lblStatus" alignment="CENTER" layoutX="38.0" layoutY="34.0" prefHeight="39.0" prefWidth="224.0" text="Payment Services" textAlignment="CENTER" textFill="BLUE">
 			<font>
 				<Font size="25.0" />
 			</font>
 		</Label>
-		<Button layoutX="38.0" layoutY="278.0" mnemonicParsing="false"
-			onAction="#register" prefHeight="39.0" prefWidth="100.0" text="Înregistrare">
+		<Button layoutX="38.0" layoutY="278.0" mnemonicParsing="false" onAction="#register" prefHeight="39.0" prefWidth="100.0" text="Register">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</Button>
-		<Button fx:id="btnClose" layoutX="162.0" layoutY="278.0"
-			mnemonicParsing="false" onAction="#close" prefHeight="39.0"
-			prefWidth="100.0" text="Închide">
+		<Button fx:id="btnClose" layoutX="162.0" layoutY="278.0" mnemonicParsing="false" onAction="#close" prefHeight="39.0" prefWidth="100.0" text="Close">
 			<font>
 				<Font size="15.0" />
 			</font>
 		</Button>
-		<CheckBox fx:id="cbProvider" layoutX="162.0" layoutY="218.0"
-			mnemonicParsing="false" prefHeight="39.0" prefWidth="100.0" text="Furnizor">
+		<CheckBox fx:id="cbProvider" layoutX="162.0" layoutY="218.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="100.0" text="Provider">
 			<font>
 				<Font size="15.0" />
 			</font>

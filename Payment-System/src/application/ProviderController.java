@@ -136,17 +136,6 @@ public class ProviderController implements Initializable {
 			ClientCall<Bill> callable2 = new ClientCall<Bill>(lookup2);
 			Main.clientExecutor.submit(callable2);
 
-			/*
-			 * RequestResponse<Client> lookupClient = new
-			 * RequestResponse<Client>(Main.host, Main.portNumber);
-			 * lookupClient.request = RequestType.ADD_BILL_TO_CLIENT;
-			 * lookupClient.parameters.add(bill);
-			 * lookupClient.parameters.add(client.getIdClient());
-			 * ClientCall<Client> callableClient = new
-			 * ClientCall<Client>(lookupClient);
-			 * Main.clientExecutor.submit(callableClient);
-			 */
-
 			Main.createAlert(AlertType.CONFIRMATION, "Factura", "Factura trimisã cãtre client!");
 			System.out.println(client.getContracts().size());
 			for (Contract c : client.getContracts()) {
@@ -172,7 +161,7 @@ public class ProviderController implements Initializable {
 				}
 			}
 		} else {
-			Main.createAlert(AlertType.ERROR, "Factura", "Eroare neprevãzutã!");
+			Main.createAlert(AlertType.ERROR, "Bill", "Unexpected error!");
 		}
 	}
 }

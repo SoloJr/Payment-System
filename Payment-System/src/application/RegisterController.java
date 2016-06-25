@@ -53,7 +53,7 @@ public class RegisterController implements Initializable {
 			verifyDataFromControls();
 			addClient();
 
-			Main.createAlert(AlertType.CONFIRMATION, "Inregistrare", "Inregistrare realizata cu succes!");
+			Main.createAlert(AlertType.CONFIRMATION, "Register", "Registration successfully done!");
 
 		} catch (RegisterException ex) {
 			Alert alert = new Alert(AlertType.ERROR);

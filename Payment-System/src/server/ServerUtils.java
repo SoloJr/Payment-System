@@ -37,6 +37,11 @@ public class ServerUtils {
 			Client client = (Client) look.parameters.get(0);
 			object = (List) payServDAO.getBillsByClient(client);
 			break;
+		case GET_CONTRACT_BY_DETAILS:
+			Client c = (Client) look.parameters.get(0);
+			Provider p = (Provider) look.parameters.get(1);
+			object = (List) payServDAO.getContractByDetails(c, p);
+			break;
 		case ADD_CLIENT:
 			payServDAO.addClient((Client) look.parameters.get(0));
 			break;
@@ -51,6 +56,9 @@ public class ServerUtils {
 			break;
 		case ADD_CONTRACT:
 			payServDAO.addContract((Contract) look.parameters.get(0));
+			break;
+		case DELETE_CONTRACT:
+			payServDAO.deleteContract((Integer) look.parameters.get(0));
 			break;
 		case PAY_BILL_BY_DETAIL:
 			payServDAO.payBillByDetails((String) look.parameters.get(0));

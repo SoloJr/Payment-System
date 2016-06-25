@@ -63,7 +63,7 @@ public class LoginController {
 					loader.setLocation(getClass().getResource("/application/Client.fxml"));
 					loader.load();
 					Parent root = loader.getRoot();
-					Scene scene = new Scene(root, 500, 500);
+					Scene scene = new Scene(root, 600, 500);
 					mainStage.setScene(scene);
 					mainStage.setTitle("Payment Services");
 
@@ -76,7 +76,7 @@ public class LoginController {
 					System.out.println(e.getMessage());
 				}
 			} else {
-				Main.createAlert(AlertType.ERROR, "Eroare la login!", "Numele de utilizator sau parola sunt gresite");
+				Main.createAlert(AlertType.ERROR, "Login error!", "Username or password is wrong!");
 			}
 		} else {
 			Provider matchedProvider = null;
@@ -91,7 +91,7 @@ public class LoginController {
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
-			System.out.println(provider.get(0).getName() + " " + provider.get(0).getPassword());
+
 			if (provider != null && provider.get(0).getPassword().equals(txtPassword.getText())) {
 				matchedProvider = provider.get(0);
 				try {
@@ -100,7 +100,7 @@ public class LoginController {
 					loader.setLocation(getClass().getResource("/application/Provider.fxml"));
 					loader.load();
 					Parent root = loader.getRoot();
-					Scene scene = new Scene(root, 500, 500);
+					Scene scene = new Scene(root, 600, 500);
 					mainStage.setScene(scene);
 					mainStage.setTitle("Payment Services");
 
@@ -112,7 +112,7 @@ public class LoginController {
 					System.out.println(e.getMessage());
 				}
 			} else {
-				Main.createAlert(AlertType.ERROR, "Eroare la login!", "Numele de utilizator sau parola sunt gresite");
+				Main.createAlert(AlertType.ERROR, "Login Error!", "Username or password is wrong!");
 			}
 		}
 

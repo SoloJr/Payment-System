@@ -18,6 +18,8 @@ public class Contract implements Serializable {
 	private int idContract;
 
 	private boolean autoPay;
+	
+	private boolean isValid;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
@@ -73,5 +75,13 @@ public class Contract implements Serializable {
 
 	public void setProvider(Provider provider) {
 		this.provider = provider;
+	}
+
+	public boolean isValid() {
+		return isValid;
+	}
+
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
 	}
 }

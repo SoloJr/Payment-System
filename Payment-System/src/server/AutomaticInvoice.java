@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import application.Main;
 import consts.Constants;
 import dao.PayServDAO;
 import model.Bill;
@@ -75,7 +74,7 @@ public class AutomaticInvoice {
 		ClientCall<List<Contract>> callable = new ClientCall<List<Contract>>(lookup);
 		List<Contract> contracts = null;
 		Future<List<Contract>> future = pool.submit(callable);
-		try {		
+		try {
 			contracts = future.get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
@@ -101,14 +100,15 @@ public class AutomaticInvoice {
 	}
 
 	public class EmitInvoice extends Thread {
+		@SuppressWarnings("static-access")
 		public void run() {
 			try {
 				while (true) {
 					for (Provider provider : providers) {
 						List<Client> subscr = getSubsribers(provider);
-						if(subscr != null){
-						sendBills(provider, subscr);
-						System.out.println("Invoice Emited, provider: " + provider.getName());
+						if (subscr != null) {
+							sendBills(provider, subscr);
+							System.out.println("Invoice Emited, provider: " + provider.getName());
 						}
 					}
 					this.sleep(15000);
@@ -116,7 +116,6 @@ public class AutomaticInvoice {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
 

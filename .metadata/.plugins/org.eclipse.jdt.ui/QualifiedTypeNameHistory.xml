@@ -56,4 +56,7 @@
 <fullyQualifiedTypeName name="model.Contract"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="model.Provider"/>
+<fullyQualifiedTypeName name="server.RequestResponse"/>
+<fullyQualifiedTypeName name="server.ClientCall"/>
+<fullyQualifiedTypeName name="server.RequestType"/>
 </qualifiedTypeNameHistroy>
