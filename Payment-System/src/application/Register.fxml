@@ -43,10 +43,15 @@
 				<Font size="18.0" />
 			</font>
 		</TextField>
-		<Button fx:id="btnRegister" layoutX="75.0" layoutY="416.0" mnemonicParsing="false" onAction="#register" prefHeight="39.0" prefWidth="200.0" text="Register">
+		<Button fx:id="btnRegister" layoutX="34.0" layoutY="416.0" mnemonicParsing="false" onAction="#register" prefHeight="40.0" prefWidth="125.0" text="Register">
 			<font>
 				<Font size="18.0" />
 			</font>
 		</Button>
+      <Button fx:id="btnClose" layoutX="189.0" layoutY="416.0" mnemonicParsing="false" onAction="#close" prefHeight="40.0" prefWidth="125.0" text="Close">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
 	</children>
 </AnchorPane>

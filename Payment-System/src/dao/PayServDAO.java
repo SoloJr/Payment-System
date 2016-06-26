@@ -165,7 +165,7 @@ public class PayServDAO {
 	}
 
 	public void createAccount(Client client){
-		Client cl = getClientByUsername(client.getName()).get(0);
+		Client cl = getClientByUsername(client.getUsername()).get(0);
 		Account clAccount = new Account();
 		clAccount.setClient(cl);
 		addAccount(clAccount);

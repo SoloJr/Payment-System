@@ -1,7 +1,6 @@
 package application;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -13,11 +12,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import model.Account;
 import model.Client;
 import model.Provider;
 import server.ClientCall;
@@ -89,8 +88,21 @@ public class RegisterController implements Initializable {
 	@FXML
 	private TextField txtEmail;
 	
+	/**
+	 * Button used to fire the register event.
+	 * 
+	 * @see Button
+	 */
 	@FXML
 	private Button btnRegister;
+	
+	/**
+	 * Button used to close the frame
+	 * 
+	 * @see Button
+	 */
+	@FXML
+	private Button btnClose;
 
 	/**
 	 * Registers the client.
@@ -108,6 +120,7 @@ public class RegisterController implements Initializable {
 			addClient();
 
 			Main.createAlert(AlertType.CONFIRMATION, "Register", "Registration successfully done!");
+			this.close();
 
 		} catch (RegisterException ex) {
 			Alert alert = new Alert(AlertType.ERROR);
@@ -191,5 +204,13 @@ public class RegisterController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	/**
+	 * Closes the GUI. Use this method to close the GUI.
+	 */
+	public void close() {
+		Stage stage = (Stage) btnClose.getScene().getWindow();
+		stage.close();
 	}
 }
