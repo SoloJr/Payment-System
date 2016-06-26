@@ -24,6 +24,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import model.Account;
 import model.Bill;
 import model.BillFX;
@@ -108,6 +109,15 @@ public class MainController implements Initializable {
 	 */
 	@FXML
 	private Button btnPayBills;
+	
+	@FXML
+	private TextField txtMoney;
+	
+	/**
+	 * Button to add money.
+	 */
+	@FXML
+	private Button btnAddMoney;
 
 	/**
 	 * Button to add provider.
@@ -255,6 +265,10 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 
+		for (Provider prov : provs) {
+			providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
+		}
+		
 		if (currentClient.getContracts().isEmpty() == false) {
 			System.out.println(currentClient.getContracts().size());
 			for (Contract contract : currentClient.getContracts()) {
@@ -267,9 +281,6 @@ public class MainController implements Initializable {
 				System.out.println(prov.getName());
 				myProviders
 						.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
-			}
-			for (Provider prov : provs) {
-				providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
 			}
 		}
 
@@ -305,7 +316,7 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * This check box event is used to see wheather all the bills, or the pay
+	 * This check box event is used to see whether all the bills, or the pay
 	 * bills.
 	 */
 	public void checkBoxHandle() {
@@ -352,6 +363,7 @@ public class MainController implements Initializable {
 			}
 			contract.setClient(currentClient);
 			contract.setDate(Calendar.getInstance().getTime());
+			contract.setValid(true);
 
 			Provider provider = null;
 			RequestResponse<List<Provider>> lookup = new RequestResponse<List<Provider>>(Main.host, Main.portNumber);
@@ -573,5 +585,32 @@ public class MainController implements Initializable {
 		}
 		currentClient.setBills(bills);
 		checkBoxHandle();
+	}
+	
+	/**
+	 * Method to add money to the account.
+	 */
+	public void addMoneyToAccount() {
+		double amount = 0.0;
+		try {
+			amount = Double.parseDouble(txtMoney.getText());
+		} catch (NumberFormatException ex) {
+			Main.createAlert(AlertType.ERROR, "Add money", "Specify a double value!");
+			return;
+		}
+		if (amount <= 0) {
+			Main.createAlert(AlertType.ERROR, "Add money", "Specify a value bigger than 0!");
+		} else {
+			int accountId = this.currentClient.getAccounts().get(0).getIdAccount();
+			double currentAmount = Double.parseDouble(lblClientBalance.getText());
+			currentAmount += amount;
+			lblClientBalance.setText(String.valueOf(currentAmount));
+			RequestResponse<Account> lookup = new RequestResponse<>(Main.host, Main.portNumber);
+			lookup.request = RequestType.UPDATE_BALANCE;
+			lookup.parameters.add(accountId);
+			lookup.parameters.add(currentAmount);
+			ClientCall<Account> callable = new ClientCall<Account>(lookup);
+			Main.clientExecutor.submit(callable);
+		}
 	}
 }

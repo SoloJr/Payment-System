@@ -3,6 +3,7 @@ package server;
 import java.util.List;
 
 import dao.PayServDAO;
+import model.Account;
 import model.Bill;
 import model.Client;
 import model.Contract;
@@ -68,6 +69,9 @@ public class ServerUtils {
 			break;
 		case ADD_BILL:
 			payServDAO.addBill((Bill) look.parameters.get(0));
+			break;
+		case ADD_ACCOUNT:
+			payServDAO.addAccount((Account) look.parameters.get(0));
 			break;
 		case ADD_CONTRACT:
 			payServDAO.addContract((Contract) look.parameters.get(0));

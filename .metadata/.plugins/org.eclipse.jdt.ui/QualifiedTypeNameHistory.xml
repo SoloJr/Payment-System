@@ -5,7 +5,6 @@
 <fullyQualifiedTypeName name="javafx.scene.control.ButtonType"/>
 <fullyQualifiedTypeName name="javafx.geometry.Insets"/>
 <fullyQualifiedTypeName name="javafx.fxml.FXML"/>
-<fullyQualifiedTypeName name="javafx.scene.control.TextField"/>
 <fullyQualifiedTypeName name="javafx.scene.control.PasswordField"/>
 <fullyQualifiedTypeName name="javafx.event.ActionEvent"/>
 <fullyQualifiedTypeName name="javafx.application.Application"/>
@@ -41,9 +40,7 @@
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="javax.persistence.TemporalType"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
-<fullyQualifiedTypeName name="javafx.scene.control.Button"/>
 <fullyQualifiedTypeName name="svrcon.Server"/>
-<fullyQualifiedTypeName name="model.Account"/>
 <fullyQualifiedTypeName name="model.Client"/>
 <fullyQualifiedTypeName name="java.util.concurrent.TimeUnit"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
@@ -54,9 +51,13 @@
 <fullyQualifiedTypeName name="java.util.concurrent.ExecutorService"/>
 <fullyQualifiedTypeName name="java.util.concurrent.Executors"/>
 <fullyQualifiedTypeName name="model.Contract"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="model.Provider"/>
+<fullyQualifiedTypeName name="javafx.scene.control.Button"/>
+<fullyQualifiedTypeName name="javafx.stage.Stage"/>
+<fullyQualifiedTypeName name="model.Account"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="server.RequestResponse"/>
-<fullyQualifiedTypeName name="server.ClientCall"/>
 <fullyQualifiedTypeName name="server.RequestType"/>
+<fullyQualifiedTypeName name="server.ClientCall"/>
+<fullyQualifiedTypeName name="javafx.scene.control.TextField"/>
 </qualifiedTypeNameHistroy>

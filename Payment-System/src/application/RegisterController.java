@@ -1,6 +1,7 @@
 package application;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -12,9 +13,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import model.Account;
 import model.Client;
 import model.Provider;
 import server.ClientCall;
@@ -85,13 +88,16 @@ public class RegisterController implements Initializable {
 	 */
 	@FXML
 	private TextField txtEmail;
+	
+	@FXML
+	private Button btnRegister;
 
 	/**
 	 * Registers the client.
 	 * 
 	 * @param event
 	 */
-	public void Register(ActionEvent event) {
+	public void register(ActionEvent event) {
 		try {
 			if (txtUsername.getText().isEmpty() == true && txtPassOne.getText().isEmpty() == true
 					&& txtPassTwo.getText().isEmpty() == true && txtName.getText().isEmpty() == true
@@ -159,6 +165,7 @@ public class RegisterController implements Initializable {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
+	
 
 		Client clientToAdd = new Client();
 		clientToAdd.setUsername(txtUsername.getText());
@@ -167,15 +174,19 @@ public class RegisterController implements Initializable {
 		clientToAdd.setSurname(txtSurname.getText());
 		clientToAdd.setEmail(txtEmail.getText());
 		clientToAdd.setContracts(null);
+		
+		List<Account> accounts = new ArrayList<Account>();
+		Account account = new Account();
+		account.setBalance(0);
+		account.setClient(clientToAdd);
+		clientToAdd.setAccounts(accounts);
 
 		RequestResponse<Client> lookup2 = new RequestResponse<Client>(Main.host, Main.portNumber);
 		lookup2.request = RequestType.ADD_CLIENT;
 		lookup2.parameters.add(clientToAdd);
 		ClientCall<Client> callable2 = new ClientCall<Client>(lookup2);
 		Main.clientExecutor.submit(callable2);
-
 	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

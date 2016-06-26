@@ -37,7 +37,7 @@
 								<Font size="18.0" />
 							</font>
 						</CheckBox>
-						<TableView fx:id="table" layoutX="14.0" layoutY="78.0" prefHeight="325.0" prefWidth="575.0">
+						<TableView fx:id="table" layoutX="14.0" layoutY="130.0" prefHeight="273.0" prefWidth="575.0">
 							<columns>
 								<TableColumn fx:id="id" prefWidth="75.0" text="Bill Id" />
 								<TableColumn fx:id="ammount" prefWidth="53.0" text="Amount" />
@@ -57,6 +57,16 @@
 								<Font size="18.0" />
 							</font>
 						</Button>
+                  <TextField fx:id="txtMoney" layoutX="182.0" layoutY="76.0">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="btnAddMoney" layoutX="14.0" layoutY="76.0" mnemonicParsing="false" onAction="#addMoneyToAccount" prefHeight="37.0" prefWidth="159.0" text="Add money">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
 					</children>
 				</AnchorPane>
 			</content>

@@ -57,7 +57,6 @@ public class PayServDAO {
 		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("custName", username)
 				.setParameter("custPass", password).getResultList();
 		if (matchClients.size() == 1) {
-			System.out.println(matchClients.get(0).getAccounts().get(0).toString());
 			return matchClients.get(0);
 		}
 
@@ -180,6 +179,20 @@ public class PayServDAO {
 		EntityManager em = this.getEntityManager();
 		em.getTransaction().begin();
 		em.persist(client);
+		em.getTransaction().commit();
+	}
+
+	/**
+	 * Adds an account to the database
+	 * 
+	 * @param account
+	 *            to be added.
+	 */
+	public void addAccount(Account account) {
+		EntityManager em = this.getEntityManager();
+		System.out.println(account.toString());
+		em.getTransaction().begin();
+		em.persist(account);
 		em.getTransaction().commit();
 	}
 
