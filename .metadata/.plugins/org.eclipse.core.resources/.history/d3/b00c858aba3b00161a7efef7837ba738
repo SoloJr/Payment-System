@@ -375,6 +375,8 @@ public class ProviderController implements Initializable {
 						lblClientValue.setText(newValue.toString());
 					}
 				}
+
+
 			}
 		} else {
 			Main.createAlert(AlertType.ERROR, "Bill", "Unexpected error!");

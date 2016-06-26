@@ -347,7 +347,7 @@ public class ProviderController implements Initializable {
 			Main.clientExecutor.submit(callable2);
 
 			Main.createAlert(AlertType.CONFIRMATION, "Bill", "Bill send to client!");
-			System.out.println("Contracte:" + client.getContracts().size());
+			System.out.println(client.getContracts().size());
 			for (Contract c : client.getContracts()) {
 				if (c.getProvider().getName().compareTo(currentProvider.getName()) == 0) {
 					if (c.getAutoPay() == true) {

@@ -123,7 +123,6 @@ public class AutomaticInvoice {
 		cal.add(Calendar.DATE, 10);
 		bill.setDueDate(cal.getTime());
 
-		List<Contract> contracts = getContracts(currentProvider, client);
 		if (contracts.size() != 0) {
 			Contract contract = contracts.get(0);
 			if (contract.getAutoPay() == true) {
@@ -171,17 +170,11 @@ public class AutomaticInvoice {
 		return subscribers;
 	}
 	
-	/**
-	 * Gets the contract between a client and a provider
-	 * @param provider
-	 * @param client
-	 * @return
-	 */
-	public static List<Contract> getContracts(Provider provider, Client client) { 
+	public List<Contract> getContracts(Provider provider, Client client) { 
 		RequestResponse<List<Contract>> lookup3 = new RequestResponse<>(host, port);
 		lookup3.request = RequestType.GET_CONTRACT_BY_DETAILS;
 		lookup3.parameters.add(client);
-		lookup3.parameters.add(provider);
+		lookup3.parameters.add(currentProvider);
 		ClientCall<List<Contract>> callable3 = new ClientCall<>(lookup3);
 		List<Contract> contracts = null;
 		try {
@@ -190,8 +183,6 @@ public class AutomaticInvoice {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-		
-		return contracts;
 	}
 
 	/**

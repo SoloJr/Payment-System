@@ -123,7 +123,6 @@ public class AutomaticInvoice {
 		cal.add(Calendar.DATE, 10);
 		bill.setDueDate(cal.getTime());
 
-		List<Contract> contracts = getContracts(currentProvider, client);
 		if (contracts.size() != 0) {
 			Contract contract = contracts.get(0);
 			if (contract.getAutoPay() == true) {
@@ -177,7 +176,7 @@ public class AutomaticInvoice {
 	 * @param client
 	 * @return
 	 */
-	public static List<Contract> getContracts(Provider provider, Client client) { 
+	public List<Contract> getContracts(Provider provider, Client client) { 
 		RequestResponse<List<Contract>> lookup3 = new RequestResponse<>(host, port);
 		lookup3.request = RequestType.GET_CONTRACT_BY_DETAILS;
 		lookup3.parameters.add(client);

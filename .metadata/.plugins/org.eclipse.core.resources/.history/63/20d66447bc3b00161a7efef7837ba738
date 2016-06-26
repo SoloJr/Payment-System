@@ -177,7 +177,7 @@ public class AutomaticInvoice {
 	 * @param client
 	 * @return
 	 */
-	public static List<Contract> getContracts(Provider provider, Client client) { 
+	public List<Contract> getContracts(Provider provider, Client client) { 
 		RequestResponse<List<Contract>> lookup3 = new RequestResponse<>(host, port);
 		lookup3.request = RequestType.GET_CONTRACT_BY_DETAILS;
 		lookup3.parameters.add(client);

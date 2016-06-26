@@ -109,10 +109,10 @@ public class MainController implements Initializable {
 	 */
 	@FXML
 	private Button btnPayBills;
-
+	
 	@FXML
 	private TextField txtMoney;
-
+	
 	/**
 	 * Button to add money.
 	 */
@@ -265,6 +265,10 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 
+		for (Provider prov : provs) {
+			providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
+		}
+		
 		if (currentClient.getContracts().isEmpty() == false) {
 			System.out.println(currentClient.getContracts().size());
 			for (Contract contract : currentClient.getContracts()) {
@@ -277,13 +281,6 @@ public class MainController implements Initializable {
 				System.out.println(prov.getName());
 				myProviders
 						.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
-			}
-			for (Provider prov : provs) {
-				providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
-			}
-		} else {
-			for (Provider prov : provs) {
-				providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
 			}
 		}
 
@@ -589,7 +586,7 @@ public class MainController implements Initializable {
 		currentClient.setBills(bills);
 		checkBoxHandle();
 	}
-
+	
 	/**
 	 * Method to add money to the account.
 	 */

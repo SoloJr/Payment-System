@@ -375,6 +375,7 @@ public class ProviderController implements Initializable {
 						lblClientValue.setText(newValue.toString());
 					}
 				}
+				BillFX billFX = new BillFX(bill.getIdBill(), bill.getAmount(), bill.getDetails(), sdf.format(bill.getIssueDate()), sdf.format(bill.getDueDate()), sdf.format(bill.getPayDate()));
 			}
 		} else {
 			Main.createAlert(AlertType.ERROR, "Bill", "Unexpected error!");

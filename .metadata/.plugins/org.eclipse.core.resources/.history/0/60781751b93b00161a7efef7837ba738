@@ -123,18 +123,30 @@ public class AutomaticInvoice {
 		cal.add(Calendar.DATE, 10);
 		bill.setDueDate(cal.getTime());
 
-		List<Contract> contracts = getContracts(currentProvider, client);
+		/*RequestResponse<List<Contract>> lookup3 = new RequestResponse<>(Main.host, Main.portNumber);
+		lookup3.request = RequestType.GET_CONTRACT_BY_DETAILS;
+		lookup3.parameters.add(client);
+		lookup3.parameters.add(currentProvider);
+		ClientCall<List<Contract>> callable3 = new ClientCall<>(lookup3);
+		List<Contract> contracts = null;
+		try {
+			Future<List<Contract>> future = Main.clientExecutor.submit(callable3);
+			contracts = future.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+
 		if (contracts.size() != 0) {
 			Contract contract = contracts.get(0);
 			if (contract.getAutoPay() == true) {
-				bill.setPayDate(issueDate);
+				bill.setPayDate(cal.getTime());
 			} else {
 				bill.setPayDate(null);
 			}
 		} else {
 			bill.setPayDate(null);
-		}
-
+		}*/
+		bill.setPayDate(null);
 		bill.setProvider(currentProvider);
 		bill.setDetails("Factura " + billNumber++ + " " + currentProvider.getName());
 		bill.setClient(client);
@@ -169,29 +181,6 @@ public class AutomaticInvoice {
 			subscribers.add(contract.getClient());
 		}
 		return subscribers;
-	}
-	
-	/**
-	 * Gets the contract between a client and a provider
-	 * @param provider
-	 * @param client
-	 * @return
-	 */
-	public static List<Contract> getContracts(Provider provider, Client client) { 
-		RequestResponse<List<Contract>> lookup3 = new RequestResponse<>(host, port);
-		lookup3.request = RequestType.GET_CONTRACT_BY_DETAILS;
-		lookup3.parameters.add(client);
-		lookup3.parameters.add(provider);
-		ClientCall<List<Contract>> callable3 = new ClientCall<>(lookup3);
-		List<Contract> contracts = null;
-		try {
-			Future<List<Contract>> future = Main.clientExecutor.submit(callable3);
-			contracts = future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
-		
-		return contracts;
 	}
 
 	/**

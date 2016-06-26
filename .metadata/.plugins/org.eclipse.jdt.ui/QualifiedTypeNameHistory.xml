@@ -36,7 +36,6 @@
 <fullyQualifiedTypeName name="javafx.fxml.Initializable"/>
 <fullyQualifiedTypeName name="javafx.collections.FXCollections"/>
 <fullyQualifiedTypeName name="javafx.beans.property.SimpleDoubleProperty"/>
-<fullyQualifiedTypeName name="model.BillFX"/>
 <fullyQualifiedTypeName name="java.sql.Date"/>
 <fullyQualifiedTypeName name="javax.persistence.TemporalType"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="server.ClientCall"/>
 <fullyQualifiedTypeName name="javafx.scene.control.TextField"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="model.BillFX"/>
 </qualifiedTypeNameHistroy>
