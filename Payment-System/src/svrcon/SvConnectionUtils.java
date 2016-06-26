@@ -21,16 +21,17 @@ public class SvConnectionUtils implements SvConnection {
 
 	@Override
 	public Client getClientIfExist(String username, String password) throws RemoteException {
-		Callable<Client> task = () -> {
-			return payServDAO.getClientByUsername(username, password);
-		};
-		Future<Client> future = executor.submit(task);
-		try {
-			return future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-			return null;
-		}
+//		Callable<Client> task = () -> {
+//			return payServDAO.getClientByUsername(username, password);
+//		};
+//		Future<Client> future = executor.submit(task);
+//		try {
+//			return future.get();
+//		} catch (InterruptedException | ExecutionException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+		return null;
 	}
 
 	@Override

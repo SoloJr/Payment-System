@@ -43,26 +43,7 @@ public class PayServDAO {
 	public List<Bill> getAllBills() {
 		return this.getEntityManager().createQuery("select b from model.Bill b", Bill.class).getResultList();
 	}
-
-	/**
-	 * @param username
-	 *            for login
-	 * @param password
-	 *            for login
-	 * @return Client for login
-	 */
-	@SuppressWarnings("unchecked")
-	public Client getClientByUsername(String username, String password) {
-		String query = "SELECT c FROM model.Client c WHERE c.username = :custName AND c.password =:custPass";
-		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("custName", username)
-				.setParameter("custPass", password).getResultList();
-		if (matchClients.size() == 1) {
-			return matchClients.get(0);
-		}
-
-		return null;
-	}
-
+	
 	/**
 	 * @param contractId
 	 *            for returning the contract.
@@ -112,7 +93,7 @@ public class PayServDAO {
 		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("custName", username)
 				.getResultList();
 		if (matchClients.size() == 1) {
-			System.out.println(matchClients.get(0).getAccounts().get(0).toString());
+//			System.out.println(matchClients.get(0).getAccounts().get(0).toString());
 			return matchClients;
 		}
 
@@ -180,8 +161,16 @@ public class PayServDAO {
 		em.getTransaction().begin();
 		em.persist(client);
 		em.getTransaction().commit();
+		createAccount(client);
 	}
 
+	public void createAccount(Client client){
+		Client cl = getClientByUsername(client.getName()).get(0);
+		Account clAccount = new Account();
+		clAccount.setClient(cl);
+		addAccount(clAccount);
+	}
+	
 	/**
 	 * Adds an account to the database
 	 * 

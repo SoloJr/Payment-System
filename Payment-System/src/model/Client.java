@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class Client implements Serializable {
 	/**
 	 * Bi-directional many-to-one association to Account
 	 */
-	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Account> accounts;
 
 	/**
@@ -186,6 +187,9 @@ public class Client implements Serializable {
 	 * @return
 	 */
 	public List<Account> getAccounts() {
+		if(accounts == null){
+			accounts = new ArrayList<Account>();
+		}
 		return this.accounts;
 	}
 

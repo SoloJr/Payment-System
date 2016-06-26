@@ -166,7 +166,7 @@ public class RegisterController implements Initializable {
 			e.printStackTrace();
 		}
 	
-
+		
 		Client clientToAdd = new Client();
 		clientToAdd.setUsername(txtUsername.getText());
 		clientToAdd.setPassword(txtPassOne.getText());
@@ -174,13 +174,7 @@ public class RegisterController implements Initializable {
 		clientToAdd.setSurname(txtSurname.getText());
 		clientToAdd.setEmail(txtEmail.getText());
 		clientToAdd.setContracts(null);
-		
-		List<Account> accounts = new ArrayList<Account>();
-		Account account = new Account();
-		account.setBalance(0);
-		account.setClient(clientToAdd);
-		clientToAdd.setAccounts(accounts);
-
+		clientToAdd.setAccounts(null);
 		RequestResponse<Client> lookup2 = new RequestResponse<Client>(Main.host, Main.portNumber);
 		lookup2.request = RequestType.ADD_CLIENT;
 		lookup2.parameters.add(clientToAdd);

@@ -3,9 +3,9 @@
 	<section name="conditionHistory">
 	</section>
 	<section name="org.eclipse.jdt.internal.debug.ui.ExpressionInformationControlCreator$ExpressionInformationControl">
-		<item value="500" key="SashWeightTree"/>
-		<item value="500" key="SashWeightDetails"/>
-		<item value="1034" key="WIDTH"/>
-		<item value="413" key="HEIGHT"/>
+		<item value="666" key="SashWeightTree"/>
+		<item value="333" key="SashWeightDetails"/>
+		<item value="820" key="WIDTH"/>
+		<item value="393" key="HEIGHT"/>
 	</section>
 </section>
