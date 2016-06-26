@@ -43,7 +43,7 @@ public class PayServDAO {
 	public List<Bill> getAllBills() {
 		return this.getEntityManager().createQuery("select b from model.Bill b", Bill.class).getResultList();
 	}
-	
+
 	/**
 	 * @param contractId
 	 *            for returning the contract.
@@ -93,7 +93,7 @@ public class PayServDAO {
 		List<Client> matchClients = this.getEntityManager().createQuery(query).setParameter("custName", username)
 				.getResultList();
 		if (matchClients.size() == 1) {
-//			System.out.println(matchClients.get(0).getAccounts().get(0).toString());
+			// System.out.println(matchClients.get(0).getAccounts().get(0).toString());
 			return matchClients;
 		}
 
@@ -164,13 +164,13 @@ public class PayServDAO {
 		createAccount(client);
 	}
 
-	public void createAccount(Client client){
+	public void createAccount(Client client) {
 		Client cl = getClientByUsername(client.getUsername()).get(0);
 		Account clAccount = new Account();
 		clAccount.setClient(cl);
 		addAccount(clAccount);
 	}
-	
+
 	/**
 	 * Adds an account to the database
 	 * 
@@ -219,6 +219,7 @@ public class PayServDAO {
 	 *            to be added.
 	 */
 	public void addBill(Bill bill) {
+		doAutoPay(bill);
 		EntityManager em = this.getEntityManager();
 		em.getTransaction().begin();
 		em.persist(bill);
@@ -364,5 +365,18 @@ public class PayServDAO {
 		em.getTransaction().begin();
 		em.remove(bill);
 		em.getTransaction().commit();
+	}
+
+	public void doAutoPay(Bill bill){
+		Client client = bill.getClient();
+		for (Contract ctr : client.getContracts()) {
+			if (ctr.getProvider().getIdProvider() == bill.getProvider().getIdProvider() && ctr.getAutoPay() == true) {
+				if (client.getAccounts().get(0).getBalance() >= bill.getAmount()) {
+					bill.setPayDate(Calendar.getInstance().getTime());
+					updateBalance(client.getAccounts().get(0).getIdAccount(), (client.getAccounts().get(0).getBalance() - bill.getAmount())); 
+					break;
+				}
+			}
+		}	
 	}
 }

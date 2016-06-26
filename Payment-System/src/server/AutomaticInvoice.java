@@ -122,19 +122,6 @@ public class AutomaticInvoice {
 		cal.setTime(issueDate);
 		cal.add(Calendar.DATE, 10);
 		bill.setDueDate(cal.getTime());
-
-		List<Contract> contracts = getContracts(currentProvider, client);
-		if (contracts.size() != 0) {
-			Contract contract = contracts.get(0);
-			if (contract.getAutoPay() == true) {
-				bill.setPayDate(issueDate);
-			} else {
-				bill.setPayDate(null);
-			}
-		} else {
-			bill.setPayDate(null);
-		}
-
 		bill.setProvider(currentProvider);
 		bill.setDetails("Factura " + billNumber++ + " " + currentProvider.getName());
 		bill.setClient(client);

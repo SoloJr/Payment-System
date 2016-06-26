@@ -117,7 +117,6 @@ public class ProviderController implements Initializable {
 	@FXML
 	private TableView<BillFX> invoiceTable;
 
-	
 	/**
 	 * Table Column for the id of the invoice.
 	 * 
@@ -158,7 +157,6 @@ public class ProviderController implements Initializable {
 	@FXML
 	private TableColumn<BillFX, String> invoiceDueDate;
 
-	
 	/**
 	 * Table Column for the invoice pay date.
 	 * 
@@ -167,7 +165,6 @@ public class ProviderController implements Initializable {
 	@FXML
 	private TableColumn<BillFX, String> invoicePayDate;
 
-	
 	/**
 	 * Displays total value that a provider has to cash in
 	 * 
@@ -183,25 +180,25 @@ public class ProviderController implements Initializable {
 	private Label lblClientText;
 
 	/**
-	 * Displays total value that a provider has to cash in from selected customer
+	 * Displays total value that a provider has to cash in from selected
+	 * customer
 	 * 
 	 */
 	@FXML
 	private Label lblClientValue;
-	
-	
+
 	/**
 	 * Keeps information that is diplayed in lblTotal
 	 * 
 	 */
 	private Double total;
-	
+
 	/**
 	 * List for displaying bills of the selected client.
 	 * 
 	 */
 	private ObservableList<BillFX> invoiceData;
-	
+
 	/**
 	 * List for displaying all clients who subscribed to the current provider
 	 * 
@@ -245,8 +242,7 @@ public class ProviderController implements Initializable {
 	}
 
 	/**
-	 * Event for selected client
-	 * Changes the bill table list
+	 * Event for selected client Changes the bill table list
 	 * 
 	 */
 	public void selectedItemChanged() {
@@ -350,24 +346,7 @@ public class ProviderController implements Initializable {
 			System.out.println("Contracte:" + client.getContracts().size());
 			for (Contract c : client.getContracts()) {
 				if (c.getProvider().getName().compareTo(currentProvider.getName()) == 0) {
-					if (c.getAutoPay() == true) {
-						int accountId = client.getAccounts().get(0).getIdAccount();
-						double newBalance = client.getAccounts().get(0).getBalance() - bill.getAmount();
-						if (newBalance >= 0) {
-							RequestResponse<Account> lookupAccount = new RequestResponse<>(Main.host, Main.portNumber);
-							lookupAccount.request = RequestType.UPDATE_BALANCE;
-							lookupAccount.parameters.add(accountId);
-							lookupAccount.parameters.add(newBalance);
-							ClientCall<Account> callableAccount = new ClientCall<Account>(lookupAccount);
-							Main.clientExecutor.submit(callableAccount);
-
-							RequestResponse<Bill> lookupBill = new RequestResponse<Bill>(Main.host, Main.portNumber);
-							lookupBill.request = RequestType.PAY_BILL_BY_DETAIL;
-							lookupBill.parameters.add(bill.getDetails());
-							ClientCall<Bill> callableBill = new ClientCall<Bill>(lookupBill);
-							Main.clientExecutor.submit(callableBill);
-						}
-					} else {
+					if (c.getAutoPay() == false){
 						total += bill.getAmount();
 						lblTotal.setText(total.toString());
 						Double newValue = Double.valueOf(lblClientValue.getText());

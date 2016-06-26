@@ -252,7 +252,7 @@ public class MainController implements Initializable {
 			}
 		}
 
-		System.out.println(currentClient.getContracts().size());
+		currentClient.getContracts().size();
 
 		RequestResponse<List<Provider>> lookup = new RequestResponse<List<Provider>>(Main.host, Main.portNumber);
 		lookup.request = RequestType.GET_PROVIDERS;
@@ -266,7 +266,7 @@ public class MainController implements Initializable {
 		}
 
 		if (currentClient.getContracts().isEmpty() == false) {
-			System.out.println(currentClient.getContracts().size());
+			currentClient.getContracts().size();
 			for (Contract contract : currentClient.getContracts()) {
 				Provider prov = contract.getProvider();
 				for (int i = 0; i < provs.size(); i++) {
@@ -324,7 +324,7 @@ public class MainController implements Initializable {
 	 */
 	public void checkBoxHandle() {
 		if (cbViewAllBills.isSelected() == true) {
-			System.out.println(this.currentClient.getBills().size());
+			this.currentClient.getBills().size();
 			data.clear();
 			for (Bill bill : currentClient.getBills()) {
 				if (bill.getPayDate() != null) {
@@ -337,7 +337,7 @@ public class MainController implements Initializable {
 				}
 			}
 		} else {
-			System.out.println(this.currentClient.getBills().size());
+			this.currentClient.getBills().size();
 			data.clear();
 			for (Bill bill : currentClient.getBills()) {
 				if (bill.getPayDate() == null) {
@@ -562,7 +562,7 @@ public class MainController implements Initializable {
 			try {
 				while (true) {
 					refreshTable();
-					this.sleep(15000);
+					this.sleep(3000);
 				}
 			} catch (InterruptedException e) {
 				System.out.println();
@@ -588,6 +588,16 @@ public class MainController implements Initializable {
 		}
 		currentClient.setBills(bills);
 		checkBoxHandle();
+		Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	try{
+	    			lblClientBalance.setText(String.valueOf(currentClient.getBills().get(0).getClient().getAccounts().get(0).getBalance()));
+	    		}catch(Exception ex){
+	    			lblClientBalance.setText("0");
+	    		}
+	        }
+	   });		
 	}
 
 	/**
