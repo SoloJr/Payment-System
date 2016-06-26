@@ -24,10 +24,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import model.Account;
 import model.Bill;
 import model.BillFX;
 import model.Client;
+import model.ClientFX;
 import model.Contract;
 import model.Provider;
 import model.ProviderFX;
@@ -37,6 +39,7 @@ import server.RequestType;
 
 /**
  * This class is used for the Client GUI.
+ * 
  * @author Solovastru Mircea
  * @version 1.0
  * @since 2016-06-01
@@ -46,6 +49,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Label field for client's name.
+	 * 
 	 * @see Label
 	 */
 	@FXML
@@ -53,6 +57,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Label field for client's balance.
+	 * 
 	 * @see Label
 	 */
 	@FXML
@@ -60,6 +65,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Check box to see all bills or not paid bills.
+	 * 
 	 * @see CheckBox
 	 */
 	@FXML
@@ -67,6 +73,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Check box to choose auto payment for bills.
+	 * 
 	 * @see ChechBox
 	 */
 	@FXML
@@ -74,6 +81,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * TableView for bills.
+	 * 
 	 * @see TableView
 	 */
 	@FXML
@@ -81,6 +89,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * TableView for my providers.
+	 * 
 	 * @see TableView
 	 */
 	@FXML
@@ -88,6 +97,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * TableView for all providers.
+	 * 
 	 * @see TableView
 	 */
 	@FXML
@@ -95,13 +105,24 @@ public class MainController implements Initializable {
 
 	/**
 	 * Button to pay bills.
+	 * 
 	 * @see Button
 	 */
 	@FXML
 	private Button btnPayBills;
 
+	@FXML
+	private TextField txtMoney;
+
+	/**
+	 * Button to add money.
+	 */
+	@FXML
+	private Button btnAddMoney;
+
 	/**
 	 * Button to add provider.
+	 * 
 	 * @see Button
 	 */
 	@FXML
@@ -109,6 +130,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Button to delete provider.
+	 * 
 	 * @see Button
 	 */
 	@FXML
@@ -116,41 +138,47 @@ public class MainController implements Initializable {
 
 	/**
 	 * Table column for id.
-	 * @see TableColumn 
+	 * 
+	 * @see TableColumn
 	 */
 	@FXML
 	private TableColumn<BillFX, Number> id;
 
 	/**
 	 * Table column for amount.
-	 * @see TableColumn 
+	 * 
+	 * @see TableColumn
 	 */
 	@FXML
 	private TableColumn<BillFX, Number> ammount;
 
 	/**
 	 * Table column for details.
-	 * @see TableColumn 
+	 * 
+	 * @see TableColumn
 	 */
 	@FXML
 	private TableColumn<BillFX, String> details;
 
 	/**
 	 * Table column for issue date.
-	 * @see TableColumn 
+	 * 
+	 * @see TableColumn
 	 */
 	@FXML
 	private TableColumn<BillFX, String> issueDate;
 
 	/**
 	 * Table column for due date.
-	 * @see TableColumn 
+	 * 
+	 * @see TableColumn
 	 */
 	@FXML
 	private TableColumn<BillFX, String> dueDate;
 
 	/**
 	 * Table column for name.
+	 * 
 	 * @see TableColumn
 	 */
 	@FXML
@@ -161,6 +189,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Table column for iban.
+	 * 
 	 * @see TableColumn
 	 */
 	@FXML
@@ -168,6 +197,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Table column for name.
+	 * 
 	 * @see TableColumn
 	 */
 	@FXML
@@ -175,6 +205,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Table column for iban.
+	 * 
 	 * @see TableColumn
 	 */
 	@FXML
@@ -191,7 +222,7 @@ public class MainController implements Initializable {
 	private ObservableList<ProviderFX> myProviders;
 
 	/**
-	 * List for all the providers. 
+	 * List for all the providers.
 	 */
 	private ObservableList<ProviderFX> providers;
 
@@ -207,6 +238,7 @@ public class MainController implements Initializable {
 
 	/**
 	 * Sets the logged client, and the details needed.
+	 * 
 	 * @param currentClient
 	 */
 	public void setCurrentClient(Client currentClient) {
@@ -221,7 +253,7 @@ public class MainController implements Initializable {
 			}
 		}
 
-		System.out.println(currentClient.getContracts().size());
+		currentClient.getContracts().size();
 
 		RequestResponse<List<Provider>> lookup = new RequestResponse<List<Provider>>(Main.host, Main.portNumber);
 		lookup.request = RequestType.GET_PROVIDERS;
@@ -235,7 +267,7 @@ public class MainController implements Initializable {
 		}
 
 		if (currentClient.getContracts().isEmpty() == false) {
-			System.out.println(currentClient.getContracts().size());
+			currentClient.getContracts().size();
 			for (Contract contract : currentClient.getContracts()) {
 				Provider prov = contract.getProvider();
 				for (int i = 0; i < provs.size(); i++) {
@@ -247,6 +279,10 @@ public class MainController implements Initializable {
 				myProviders
 						.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
 			}
+			for (Provider prov : provs) {
+				providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
+			}
+		} else {
 			for (Provider prov : provs) {
 				providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
 			}
@@ -272,8 +308,8 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Method used for a small about box, where the 
-	 * programmers names are written. 
+	 * Method used for a small about box, where the programmers names are
+	 * written.
 	 */
 	public void onAbout() {
 		Alert alert = new Alert(AlertType.INFORMATION);
@@ -284,12 +320,12 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * This check box event is used to see wheather
-	 * all the bills, or the pay bills.
+	 * This check box event is used to see whether all the bills, or the pay
+	 * bills.
 	 */
 	public void checkBoxHandle() {
 		if (cbViewAllBills.isSelected() == true) {
-			System.out.println(this.currentClient.getBills().size());
+			this.currentClient.getBills().size();
 			data.clear();
 			for (Bill bill : currentClient.getBills()) {
 				if (bill.getPayDate() != null) {
@@ -302,7 +338,7 @@ public class MainController implements Initializable {
 				}
 			}
 		} else {
-			System.out.println(this.currentClient.getBills().size());
+			this.currentClient.getBills().size();
 			data.clear();
 			for (Bill bill : currentClient.getBills()) {
 				if (bill.getPayDate() == null) {
@@ -314,9 +350,9 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Method used to add a provider.
-	 * This method establishes a contract between the client
-	 * and the provider.
+	 * Method used to add a provider. This method establishes a contract between
+	 * the client and the provider.
+	 * 
 	 * @param event
 	 */
 	public void addProvider(ActionEvent event) {
@@ -331,6 +367,7 @@ public class MainController implements Initializable {
 			}
 			contract.setClient(currentClient);
 			contract.setDate(Calendar.getInstance().getTime());
+			contract.setValid(true);
 
 			Provider provider = null;
 			RequestResponse<List<Provider>> lookup = new RequestResponse<List<Provider>>(Main.host, Main.portNumber);
@@ -368,10 +405,10 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Method used to delete the selected provider.
-	 * Also, there are some checks: in order to
-	 * unsubscribe from a provider, all the bills related
-	 * to that provider.
+	 * Method used to delete the selected provider. Also, there are some checks:
+	 * in order to unsubscribe from a provider, all the bills related to that
+	 * provider.
+	 * 
 	 * @param event
 	 */
 	public void deleteProvider(ActionEvent event) {
@@ -391,9 +428,9 @@ public class MainController implements Initializable {
 			}
 
 			provider = provs.get(0);
-			
+
 			boolean hasPaidAllBills = true;
-			
+
 			for (Bill b : currentClient.getBills()) {
 				if (b.getProvider().getName().compareTo(provider.getName()) == 0) {
 					if (b.getPayDate() == null) {
@@ -402,7 +439,7 @@ public class MainController implements Initializable {
 					}
 				}
 			}
-			
+
 			if (hasPaidAllBills == true) {
 				Contract contract = null;
 
@@ -418,9 +455,9 @@ public class MainController implements Initializable {
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
-				
+
 				System.out.println(contracts.size());
-				
+
 				contract = contracts.get(0);
 
 				RequestResponse<Contract> lookup2 = new RequestResponse<Contract>(Main.host, Main.portNumber);
@@ -440,9 +477,9 @@ public class MainController implements Initializable {
 	}
 
 	/**
-	 * Method used to pay the selected bill.
-	 * Also, here are some normal checks, whether the client
-	 * has money to pay the bill, or if the bill was paid before.
+	 * Method used to pay the selected bill. Also, here are some normal checks,
+	 * whether the client has money to pay the bill, or if the bill was paid
+	 * before.
 	 */
 	public void payBills() {
 		BillFX bill = (BillFX) table.getSelectionModel().getSelectedItem();
@@ -481,8 +518,11 @@ public class MainController implements Initializable {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see javafx.fxml.Initializable#initialize(java.net.URL,
+	 * java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -513,7 +553,9 @@ public class MainController implements Initializable {
 	 * @see Thread
 	 */
 	private class WatchForChanges extends Thread {
-		/* (non-Javadoc)
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Thread#run()
 		 */
 		@SuppressWarnings("static-access")
@@ -521,7 +563,7 @@ public class MainController implements Initializable {
 			try {
 				while (true) {
 					refreshTable();
-					this.sleep(15000);
+					this.sleep(3000);
 				}
 			} catch (InterruptedException e) {
 				System.out.println();
@@ -534,6 +576,7 @@ public class MainController implements Initializable {
 	 * This method is used to refresh to table in order to send notifications.
 	 */
 	public void refreshTable() {
+		BillFX selectedBill = (BillFX) table.getSelectionModel().getSelectedItem();
 		RequestResponse<List<Bill>> lookup = new RequestResponse<List<Bill>>(Main.host, Main.portNumber);
 		lookup.request = RequestType.GET_BILLS_BY_CLIENT;
 		lookup.parameters.add(currentClient);
@@ -547,5 +590,42 @@ public class MainController implements Initializable {
 		}
 		currentClient.setBills(bills);
 		checkBoxHandle();
+		Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	try{
+	    			lblClientBalance.setText(String.valueOf(currentClient.getBills().get(0).getClient().getAccounts().get(0).getBalance()));
+	    		}catch(Exception ex){
+	    			lblClientBalance.setText("0");
+	    		}
+	        }
+	   });		
+	}
+
+	/**
+	 * Method to add money to the account.
+	 */
+	public void addMoneyToAccount() {
+		double amount = 0.0;
+		try {
+			amount = Double.parseDouble(txtMoney.getText());
+		} catch (NumberFormatException ex) {
+			Main.createAlert(AlertType.ERROR, "Add money", "Specify a double value!");
+			return;
+		}
+		if (amount <= 0) {
+			Main.createAlert(AlertType.ERROR, "Add money", "Specify a value bigger than 0!");
+		} else {
+			int accountId = this.currentClient.getAccounts().get(0).getIdAccount();
+			double currentAmount = Double.parseDouble(lblClientBalance.getText());
+			currentAmount += amount;
+			lblClientBalance.setText(String.valueOf(currentAmount));
+			RequestResponse<Account> lookup = new RequestResponse<>(Main.host, Main.portNumber);
+			lookup.request = RequestType.UPDATE_BALANCE;
+			lookup.parameters.add(accountId);
+			lookup.parameters.add(currentAmount);
+			ClientCall<Account> callable = new ClientCall<Account>(lookup);
+			Main.clientExecutor.submit(callable);
+		}
 	}
 }

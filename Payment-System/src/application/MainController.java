@@ -29,6 +29,7 @@ import model.Account;
 import model.Bill;
 import model.BillFX;
 import model.Client;
+import model.ClientFX;
 import model.Contract;
 import model.Provider;
 import model.ProviderFX;
@@ -575,6 +576,7 @@ public class MainController implements Initializable {
 	 * This method is used to refresh to table in order to send notifications.
 	 */
 	public void refreshTable() {
+		BillFX selectedBill = (BillFX) table.getSelectionModel().getSelectedItem();
 		RequestResponse<List<Bill>> lookup = new RequestResponse<List<Bill>>(Main.host, Main.portNumber);
 		lookup.request = RequestType.GET_BILLS_BY_CLIENT;
 		lookup.parameters.add(currentClient);
@@ -588,6 +590,7 @@ public class MainController implements Initializable {
 		}
 		currentClient.setBills(bills);
 		checkBoxHandle();
+		table.getSelectionModel().select(selectedBill);
 		Platform.runLater(new Runnable() {
 	        @Override
 	        public void run() {

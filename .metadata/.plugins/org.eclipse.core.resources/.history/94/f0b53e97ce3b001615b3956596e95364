@@ -24,6 +24,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import model.Account;
 import model.Bill;
 import model.BillFX;
@@ -108,7 +109,14 @@ public class MainController implements Initializable {
 	 */
 	@FXML
 	private Button btnPayBills;
-	
+
+	@FXML
+	private TextField txtMoney;
+
+	/**
+	 * Button to add money.
+	 */
+	@FXML
 	private Button btnAddMoney;
 
 	/**
@@ -244,7 +252,7 @@ public class MainController implements Initializable {
 			}
 		}
 
-		System.out.println(currentClient.getContracts().size());
+		currentClient.getContracts().size();
 
 		RequestResponse<List<Provider>> lookup = new RequestResponse<List<Provider>>(Main.host, Main.portNumber);
 		lookup.request = RequestType.GET_PROVIDERS;
@@ -257,12 +265,8 @@ public class MainController implements Initializable {
 			e.printStackTrace();
 		}
 
-		for (Provider prov : provs) {
-			providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
-		}
-		
 		if (currentClient.getContracts().isEmpty() == false) {
-			System.out.println(currentClient.getContracts().size());
+			currentClient.getContracts().size();
 			for (Contract contract : currentClient.getContracts()) {
 				Provider prov = contract.getProvider();
 				for (int i = 0; i < provs.size(); i++) {
@@ -273,6 +277,13 @@ public class MainController implements Initializable {
 				System.out.println(prov.getName());
 				myProviders
 						.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
+			}
+			for (Provider prov : provs) {
+				providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
+			}
+		} else {
+			for (Provider prov : provs) {
+				providers.add(new ProviderFX(prov.getIdProvider(), prov.getIban(), prov.getName(), prov.getPassword()));
 			}
 		}
 
@@ -313,7 +324,7 @@ public class MainController implements Initializable {
 	 */
 	public void checkBoxHandle() {
 		if (cbViewAllBills.isSelected() == true) {
-			System.out.println(this.currentClient.getBills().size());
+			this.currentClient.getBills().size();
 			data.clear();
 			for (Bill bill : currentClient.getBills()) {
 				if (bill.getPayDate() != null) {
@@ -326,7 +337,7 @@ public class MainController implements Initializable {
 				}
 			}
 		} else {
-			System.out.println(this.currentClient.getBills().size());
+			this.currentClient.getBills().size();
 			data.clear();
 			for (Bill bill : currentClient.getBills()) {
 				if (bill.getPayDate() == null) {
@@ -551,7 +562,7 @@ public class MainController implements Initializable {
 			try {
 				while (true) {
 					refreshTable();
-					this.sleep(15000);
+					this.sleep(3000);
 				}
 			} catch (InterruptedException e) {
 				System.out.println();
@@ -577,5 +588,42 @@ public class MainController implements Initializable {
 		}
 		currentClient.setBills(bills);
 		checkBoxHandle();
+		Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	try{
+	    			lblClientBalance.setText(String.valueOf(currentClient.getBills().get(0).getClient().getAccounts().get(0).getBalance()));
+	    		}catch(Exception ex){
+	    			lblClientBalance.setText("0");
+	    		}
+	        }
+	   });		
+	}
+
+	/**
+	 * Method to add money to the account.
+	 */
+	public void addMoneyToAccount() {
+		double amount = 0.0;
+		try {
+			amount = Double.parseDouble(txtMoney.getText());
+		} catch (NumberFormatException ex) {
+			Main.createAlert(AlertType.ERROR, "Add money", "Specify a double value!");
+			return;
+		}
+		if (amount <= 0) {
+			Main.createAlert(AlertType.ERROR, "Add money", "Specify a value bigger than 0!");
+		} else {
+			int accountId = this.currentClient.getAccounts().get(0).getIdAccount();
+			double currentAmount = Double.parseDouble(lblClientBalance.getText());
+			currentAmount += amount;
+			lblClientBalance.setText(String.valueOf(currentAmount));
+			RequestResponse<Account> lookup = new RequestResponse<>(Main.host, Main.portNumber);
+			lookup.request = RequestType.UPDATE_BALANCE;
+			lookup.parameters.add(accountId);
+			lookup.parameters.add(currentAmount);
+			ClientCall<Account> callable = new ClientCall<Account>(lookup);
+			Main.clientExecutor.submit(callable);
+		}
 	}
 }
